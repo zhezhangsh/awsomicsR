@@ -21,8 +21,8 @@ TestGSE<-function(gs, u, coll, size.min=10, size.max=500, p.cutoff=0.05) {
   n<-N<-rep(0, length(coll));
   names(n)<-names(N)<-names(coll);
   
-  n[names(l0)]<-sapply(l0, length);
-  N[names(l1)]<-sapply(l1, length);
+  if (length(l0) > 0) n[names(l0)]<-sapply(l0, length);
+  if (length(l1) > 0) N[names(l1)]<-sapply(l1, length);
 
   n11<-n;
   n10<-N-n;
