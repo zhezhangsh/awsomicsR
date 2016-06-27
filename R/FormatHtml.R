@@ -4,6 +4,7 @@
 # Add href tags to a character string
 AddHref<-function(v, url) {
     if (length(v) == 0) NULL else {
+	if (length(v)==1 & length(url) > 1) v <- rep(v, length(url)); 
         url <- url[1:length(v)];
         url[is.na(url)] <- '';
         paste('<a href="', as.vector(url), '" target="_blank">', as.vector(v), '</a>', sep='');
