@@ -3,6 +3,6 @@ Title: awsomics framework
 Version: 0.0.0.9000
 Authors@R: person("Zhe", "Zhang", email = "zhangz@email.chop.edu", role = c("aut", "cre"))
 Description: The R package attached to the awsomics framework, with various functions for data manipulation, plotting, analysis, etc.
-Depends: R (>= 3.2.0), devtools, RCurl
+Depends: R (>= 3.1.2), devtools, RCurl
 License: GPL (>=2)
 LazyData: true
