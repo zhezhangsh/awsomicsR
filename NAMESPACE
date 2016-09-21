@@ -60,6 +60,7 @@ export("PlotQqFromPhred");
 export("PlotSeries");
 export("PlotVenn");
 export("PlotVenn3Way");
+export("PlotVolcano");
 export("ReformatMotifHits");
 export("RemoveExtension"); 
 export("RetrieveGadem");
