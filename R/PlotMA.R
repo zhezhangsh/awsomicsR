@@ -1,4 +1,4 @@
-PlotMA <- function(x, y, xlab='', ylab='' title='') {
+PlotMA <- function(x, y, xlab='', ylab='', title='') {
   if (title=='' | is.na(title)) par(mar=c(5,5,2,2)) else par(mar=c(5,5,3,2));
   z <- max(y, na.rm=TRUE);
   if (is.na(xlab) | xlab='') xlab <- 'Log2(average expression)';
