@@ -37,6 +37,7 @@ export("PlotGroupTypes");
 export("PlotHeatmap");
 export("PlotHeatmap.2");
 export("PlotLogScatter");
+export("PlotMA");
 export("PlotMatrixGroup");
 export("PlotMatrixGroupBar");
 export("PlotMatrixGroupBox");
