@@ -13,7 +13,7 @@ PlotPValue <- function(pv, col='#6666FFDD', interval=0.01, xlab='', ylab='', tit
   
   if (interval <= 0 | interval > 1) interval <- 0.01;
   
-  hist(pv, br=1/interval, border=NA, col=col, main=title, xlab=xlab, ylab=ylab, cex.lab=2);
+  hist(pv, br=1/interval, border=NA, col=col, main=title, xlab=xlab, ylab=ylab, cex.lab=2, xlim=c(0, 1));
   abline(h=interval*length(pv), lty=2, col='#333333');
   box();
 }
