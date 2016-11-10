@@ -17,7 +17,7 @@ PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE) {
       layout(
         showlegend=FALSE,
         xaxis = list(title=xlab, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
-        yaxis = list(title=ylab, range=c(-z, z), zeroline=TRUE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE))
+        yaxis = list(title=ylab, range=c(-z, z), zeroline=TRUE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE));
   } else {
     if (title=='' | is.na(title)) par(mar=c(5,5,2,2)) else par(mar=c(5,5,3,2));
     plot(x, y, pch=18, col='#4444DD88', cex=.75, xlab=xlab, ylab=ylab, ylim=c(-z, z), main = title, cex.lab=2);

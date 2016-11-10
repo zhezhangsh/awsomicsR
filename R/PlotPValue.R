@@ -1,4 +1,4 @@
-PlotPValue <- function(pv, col='#6666FFDD', interval=0.01, xlab='', ylab='', title='') {
+PlotPValue <- function(pv, col='#6666FFDD', interval=0.01, xlab='', ylab='', title='', plotly=FALSE) {
   
   pv <- pv[!is.na(pv)];
   pv <- pv[pv>=0 & pv <=1];
@@ -13,7 +13,15 @@ PlotPValue <- function(pv, col='#6666FFDD', interval=0.01, xlab='', ylab='', tit
   
   if (interval <= 0 | interval > 1) interval <- 0.01;
   
-  hist(pv, br=1/interval, border=NA, col=col, main=title, xlab=xlab, ylab=ylab, cex.lab=2, xlim=c(0, 1));
-  abline(h=interval*length(pv), lty=2, col='#333333');
-  box();
+  if (plotly) {
+    require(plotly);
+    plot_ly(x=~pv, type='histogram') %>%
+    layout(
+      xaxis = list(title=xlab, zeroline=FALSE, showgrid=FALSE, showline=TRUE, showticklabels=TRUE),
+      yaxis = list(title=ylab, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE));
+  } else {
+    hist(pv, br=1/interval, border=NA, col=col, main=title, xlab=xlab, ylab=ylab, cex.lab=2, xlim=c(0, 1));
+    abline(h=interval*length(pv), lty=2, col='#333333');
+    box();
+  }
 }
