@@ -15,10 +15,10 @@ PlotVolcano <- function(fc, p, title='', plotly=FALSE) {
   if (plotly) {
     require(plotly);
     sz  <- 6*(5-max(1, min(4, round(log10(length(fc))))));
-    mrk <- list(size = sz*cx, symbol=2, line=list(width=.8, color='rgba(0, 0, 0, .3)'));
+    mrk <- list(size = sz, symbol=2, line=list(width=.8, color='rgba(0, 0, 0, .3)'));
     d   <- data.frame(x=fc, y=y, size=cx);
     
-    plot_ly(data=d, x=~fc, y=~y, type='scatter', mode='markers', text=names(fc), hoverinfo="text", marker=mrk) %>%
+    plot_ly(data=d, x=~fc, y=~y, type='scatter', mode='markers', text=rownames(d), hoverinfo="text", marker=mrk) %>%
       layout(
         showlegend=FALSE,
         xaxis = list(title='Log2(fold change)', range=xlim, zeroline=TRUE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
