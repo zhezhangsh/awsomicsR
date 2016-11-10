@@ -24,11 +24,11 @@ PlotVolcano <- function(fc, p, title='', plotly=FALSE) {
       geom_point(aes(text=names(fc)), size=0.8*sz, col='#DD0000DD');
     ggplotly(p); 
     
-    plot_ly(data=d, x=~fc, y=~y, type='scatter', mode='markers', text=rownames(d), hoverinfo="text", marker=mrk) %>%
-      layout(
-        showlegend=FALSE,
-        xaxis = list(title='Log2(fold change)', range=xlim, zeroline=TRUE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
-        yaxis = list(title='-Log10(p value)', range=ylim, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE));
+#     plot_ly(data=d, x=~fc, y=~y, type='scatter', mode='markers', text=rownames(d), hoverinfo="text", marker=mrk) %>%
+#       layout(
+#         showlegend=FALSE,
+#         xaxis = list(title='Log2(fold change)', range=xlim, zeroline=TRUE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
+#         yaxis = list(title='-Log10(p value)', range=ylim, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE));
   } else {
     if (title=='' | is.na(title)) par(mar=c(5,5,2,2)) else par(mar=c(5,5,3,2));
     
