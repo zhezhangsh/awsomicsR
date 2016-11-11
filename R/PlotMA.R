@@ -5,12 +5,17 @@ PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE, max.p=5000) {
   lo  <- lowess(y~x);
   lox <- lo[[1]];
   loy <- lo[[2]]; 
+  if (length(x) >= 1000) {
+    i <- round(seq(1, length(y), length.out = 1000));
+    lox <- lox[i];
+    loy <- loy[i]; 
+  }  
   
   if (plotly) {
     require(plotly); 
     cut <- rev(sort(abs(y)))[min(max(100, max.p), length(y))]; 
     sel <- abs(y) >= cut;
-    sz  <- abs(y/z)*10*(5-max(1, min(4, round(log10(length(x))))));
+    sz  <- sqrt(abs(y/z))*10*(5-max(1, min(4, round(log10(length(x))))));
     mrk <- list(size = sz[sel], symbol=0, line=list(width=.8, color='rgba(0, 0, 0, .3)'));
     d   <- data.frame(x=x, y=y, txt=names(x))[sel, ];
     
