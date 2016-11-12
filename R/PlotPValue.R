@@ -15,7 +15,7 @@ PlotPValue <- function(pv, col='#6666FFDD', interval=0.01, xlab='', ylab='', tit
   
   if (plotly) {
     require(plotly);
-    plot_ly(x=~pv, type='histogram') %>%
+    plot_ly(x=~pv, type='histogram', xbins=list(start=0, end=1, size=0.01), autobinx=FALSE) %>%
     layout(
       xaxis = list(title=xlab, zeroline=FALSE, showgrid=FALSE, showline=TRUE, showticklabels=TRUE),
       yaxis = list(title=ylab, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE));
