@@ -1,4 +1,6 @@
-PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE, npoints=3000) {
+PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE, npoints=2500) {
+  require(awsomics);
+
   if (is.na(xlab) | xlab=='') xlab <- 'Log2(average expression)';
   if (is.na(ylab) | ylab=='') ylab <- 'Log2(fold change)';
   z <- max(abs(y), na.rm=TRUE);

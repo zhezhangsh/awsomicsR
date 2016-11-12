@@ -1,4 +1,6 @@
-PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=1000) {
+PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=2000) {
+  require(awsomics);
+  
   i  <- which(!is.na(fc) & !is.na(p));
   fc <- fc[i];
   p  <- p[i]; 

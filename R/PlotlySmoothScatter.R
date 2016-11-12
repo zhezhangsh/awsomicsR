@@ -55,12 +55,14 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   
   p <- plot_ly(data=dd, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk); 
   # Add line
-  if (length(line)==2 & length(line[[1]]==line[[2]])) {
-    lx <- line[[1]];
-    ly <- line[[2]]; 
-    ind <- seq(1, length(lx), length.out = max(length(x), 1000));
-    p <- add_lines(p, x=lx[ind], y=ly[ind], text='')
-  };
+  if (length(line)==2) {
+    if (length(line[[1]]==line[[2]])) {
+      lx <- line[[1]];
+      ly <- line[[2]]; 
+      ind <- seq(1, length(lx), length.out = max(length(x), 1000));
+      p <- add_lines(p, x=lx[ind], y=ly[ind], text='')
+    }
+  }
   p <- layout(p, shapes=sp, showlegend=FALSE, 
               xaxis = list(title=xlab, range=xlim, zeroline=zero.line[1], showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
               yaxis = list(title=ylab, range=ylim, zeroline=zero.line[2], showgrid=TRUE, showline=TRUE, showticklabels=TRUE))
