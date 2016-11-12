@@ -1,10 +1,10 @@
-PlotPA <- function(x, p, xlab='', ylab='', title='', plotly=FALSE, npoints=2500) {
+PlotPA <- function(x, p, xlab='', ylab='', title='', plotly=FALSE, npoints=1000) {
   require(awsomics);
   
   if (is.na(xlab) | xlab=='') xlab <- 'Log2(average expression)';
   if (is.na(ylab) | ylab=='') ylab <- 'Log10(p value)';
   
-  i <- which(!is.na(x) & !is.na(p));
+  i <- which(!is.na(x) & !is.na(p) & p>=0 & p<=1 & x>-Inf & x<Inf);
   x <- x[i];
   p <- p[i]; 
   y <- -1*log10(p);

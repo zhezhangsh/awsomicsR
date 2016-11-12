@@ -1,8 +1,13 @@
-PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE, npoints=2500) {
+PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE, npoints=1000) {
   require(awsomics);
 
   if (is.na(xlab) | xlab=='') xlab <- 'Log2(average expression)';
   if (is.na(ylab) | ylab=='') ylab <- 'Log2(fold change)';
+  
+  i <- which(!is.na(x) & !is.na(y) & x>-Inf & x<Inf & y>-Inf & y<Inf);
+  x <- x[i];
+  y <- y[i]; 
+  
   z <- max(abs(y), na.rm=TRUE);
   lo  <- lowess(y~x);
   lox <- lo[[1]];
