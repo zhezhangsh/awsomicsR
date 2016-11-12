@@ -46,7 +46,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   iym <- 1 + as.integer((nx - 1) * (y - ym[1])/(ym[nx] - ym[1])); 
   
   dens <- est$fhat
-  dens[] <- transformation(dens^0.25); 
+  dens[] <- dens^0.25; 
   sel <- order(dens[cbind(ixm, iym)])[seq_len(npoints)]
 
   col.mark <- paste('rgba(', paste(col2rgb(col.mark, TRUE)[, 1], collapse=','), ')', sep='');

@@ -13,7 +13,7 @@ PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=1000) {
   
   if (plotly) {
     require(plotly);
-    sz  <- 10*cx*max(1, 5-max(1, min(4, round(log10(length(x))))));
+    sz  <- 10*cx*max(1, 5-max(1, min(4, round(log10(length(fc))))));
     PlotlySmoothScatter(fc, y, xlab='Log2(fold change)', ylab='-Log10(p value)', xlim=xlim, ylim=ylim, size=sz, symbol=2, 
                         txt=names(fc), npoints=npoints, zero.line=c(TRUE, FALSE), col.mark = '#BB0000BB', col.shape = '#FF3333DD');
    } else {
