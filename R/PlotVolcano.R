@@ -1,5 +1,4 @@
-PlotVolcano <- function(fc, p, title='', plotly=FALSE, max.p=5000) {
-  
+PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=1000) {
   i  <- which(!is.na(fc) & !is.na(p));
   fc <- fc[i];
   p  <- p[i]; 
@@ -14,26 +13,10 @@ PlotVolcano <- function(fc, p, title='', plotly=FALSE, max.p=5000) {
   
   if (plotly) {
     require(plotly);
-    cut <- rev(sort(z))[min(max(100, max.p), length(z))]
-    sel <- z >= cut;
-    sz  <- 5*max(1, 5-max(1, min(4, round(log10(length(fc))))));
-    mrk <- list(size = 2*cx[sel]*sz, symbol=2, color='rgba(196,0,0,.6)', line=list(width=.8, color='rgba(0, 0, 0, .3)'));
-    d   <- data.frame(fc=fc, y=y)[sel, ];
-    
-    plot_ly(data=d, x=~fc, y=~y, type='scatter', mode='markers', text=rownames(d), hoverinfo="text", marker=mrk) %>%
-      layout(
-        showlegend=FALSE, 
-        xaxis = list(title='Log2(fold change)', range=xlim, zeroline=TRUE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
-        yaxis = list(title='-Log10(p value)', range=ylim, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE),
-        shapes = list(list(type = 'circle', xref = 'x', x0 = -sqrt(cut), x1 = sqrt(cut), yref = 'y', y0 = -sqrt(cut), y1 = sqrt(cut), 
-                           fillcolor = 'rgba(196,0,0,.6)', line = list(width=0), opacity = 0.1)))
-    
-    #     p <- ggplot(data=d, aes(x=X, y=Y)) + 
-    #       theme(legend.position="none") + 
-    #       labs(x="Log2(fold change)",y="-Log10(p value)") +
-    #       geom_point(aes(text=names(fc)), size=0.8*sz, col='#DD0000DD');
-    #     ggplotly(p); 
-  } else {
+    sz  <- 10*cx*max(1, 5-max(1, min(4, round(log10(length(x))))));
+    PlotlySmoothScatter(fc, y, xlab='Log2(fold change)', ylab='-Log10(p value)', xlim=xlim, ylim=ylim, size=sz, symbol=2, 
+                        txt=names(fc), npoints=npoints, zero.line=c(TRUE, FALSE), col.mark = '#BB0000BB', col.shape = '#FF3333DD');
+   } else {
     if (title=='' | is.na(title)) par(mar=c(5,5,2,2)) else par(mar=c(5,5,3,2));
     
     plot(fc, y, main=title, pch=18, col='#FF6666DD', cex=cx, xlab='Log2(fold change)', ylab='-Log10(p value)', 
