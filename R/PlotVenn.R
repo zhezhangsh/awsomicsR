@@ -1,6 +1,7 @@
 # Draw a 2-set Venn diagram
 PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, pdf=FALSE, 
                    plot.new=FALSE, lwd=4, cex=1, title='', plotly=FALSE) {
+  out<-list();
   
   if (length(universe)>=2) {
     s1<-intersect(s1, universe);
@@ -20,6 +21,8 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
     l2 <- length(s2)-l0;
     l  <- length(universe)-l0-l1-l2;
     
+    out$counts<-c(l, l1, l2, l0);
+    
     if (plotly) {
       require(plotly); 
       x  <- c(1, 2, 3, 2, 1, 3); 
@@ -28,10 +31,11 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
       
       # Run fisher
       if (fisher) {
+        out$fisher <- fisher.test(matrix(out$counts, nr=2));
         f  <- fisher.test(matrix(c(l1, l, l0, l2), nr=2));
-        p  <- f[[1]];
-        ci <- f[[2]];
-        or <- f[[3]];
+        p  <- out$fisher[[1]];
+        ci <- out$fisher[[2]];
+        or <- out$fisher[[3]];
         
         if (p<0.0001) p <- format(p, scientific=TRUE, digit=2) else p <- round(p, 4);
         p  <- gsub(' ', '', p);
@@ -55,7 +59,6 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
       plot_ly(x=x, y=y, type='scatter', mode='text', text=tt, textfont = tfont) %>% 
         layout(shapes=list(shap1, shap2, shap3), title=title, showlegend=FALSE, xaxis=xaxis, yaxis=yaxis)
     } else {
-      out<-list();
       if (title[1]=='') par(mar=rep(1, 4)) else par(mar=c(1, 1, 3, 1));
       plot(0, type='n', xlim=c(0, 8), ylim=c(0, 6), axes=F, bty='n', xaxs='i', yaxs='i', xlab='', ylab=''); # plot an empty space
       bg<-'yellow1';
@@ -67,7 +70,6 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
       rect(0, 0, 8, 6, lwd=lwd, border='black');
       title(main=title, cex.main=2); 
       
-      out$counts<-c(l, l1, l2, l0);
       col='maroon';
       text(2, 3, labels=l1, col=col, cex=cex);
       text(6, 3, labels=l2, col=col, cex=cex);
