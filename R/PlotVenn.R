@@ -53,8 +53,7 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
       shap3 <- list(type='rect', xref='x', yref='y', x0=0, x1=4, y0=0, y1=4, fillcolor='none',  opacity=1);
       
       plot_ly(x=x, y=y, type='scatter', mode='text', text=tt, textfont = tfont) %>% 
-        layout(shapes=list(shap1, shap2, shap3), showlegend=FALSE, xaxis=xaxis, yaxis=yaxis)
-      
+        layout(shapes=list(shap1, shap2, shap3), title=title, showlegend=FALSE, xaxis=xaxis, yaxis=yaxis)
     } else {
       out<-list();
       if (title[1]=='') par(mar=rep(1, 4)) else par(mar=c(1, 1, 3, 1));
