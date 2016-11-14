@@ -8,7 +8,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   rng.y <- range(y, na.rm = TRUE); 
   bandw <- c((rng.x[2]-rng.x[1])/100, (rng.y[2]-rng.y[1])/100);
   
-  est <- bkde2D(cbind(x, y), bandwidth = bandw, gridsize=c(100, 100));
+  est <- bkde2D(cbind(x, y), bandwidth = bandw, gridsize=c(80, 80));
   
   x1 <- rep(est$x1, length(est$x2));
   y1 <- rep(est$x2, each=length(est$x1));
