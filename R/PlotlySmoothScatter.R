@@ -28,7 +28,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   wy <- mean(est[[2]][-1]-est[[2]][-length(est[[2]])])/2;
 
   df <- data.frame(X=x1, Y=y1, Color=cs, stringsAsFactors = FALSE); 
-  fl <- rev(sort(z2))[1000];
+  fl <- rev(sort(z2))[1600];
   df <- df[z2>fl & x1>=min(x) & x1<=max(x) & y1>=min(y) & y1<=max(y), , drop = FALSE]; 
   
   # density blocks
