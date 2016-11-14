@@ -17,7 +17,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   # Colors
   c0 <- colorpanel(256, '#FFFFFFFF', col.shape);
   mx <- rev(sort(z1))[ceiling(length(z1)/1000)]; 
-  mn <- 0.01*mx;
+  mn <- 0.025*mx;
   z1[z1<mn] <- 0; 
   z2 <- floor((z1-mn)/(mx-mn)*256)+2;
   z2 <- pmax(1, pmin(256, z2)); 
