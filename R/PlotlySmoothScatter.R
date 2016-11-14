@@ -17,7 +17,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   # Colors
   c0 <- colorpanel(256, '#FFFFFFFF', col.shape);
   mx <- rev(sort(z1))[ceiling(length(z1)/1000)]; 
-  mn <- 0.05*mx;
+  mn <- 0.01*mx;
   z1[z1<mn] <- 0; 
   z2 <- floor((z1-mn)/(mx-mn)*256)+2;
   z2 <- pmax(1, pmin(256, z2)); 
@@ -28,7 +28,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   wy <- mean(est[[2]][-1]-est[[2]][-length(est[[2]])])/2;
 
   df <- data.frame(X=x1, Y=y1, Color=cs, stringsAsFactors = FALSE); 
-  fl <- rev(sort(z2))[1000]
+  fl <- rev(sort(z2))[1000];
   df <- df[z2>fl & x1>=min(x) & x1<=max(x) & y1>=min(y) & y1<=max(y), , drop = FALSE]; 
   
   # density blocks
@@ -36,7 +36,6 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
     list(type='rect', fillcolor=df[i, 3], line=list(width=0), xref='x', yref='y', opacity = 0.5,
          x0=df[i, 1]-wx, x1=df[i, 1]+wx, y0=df[i, 2]-wy, y1=df[i, 2]+wy)
   }); 
-  
   ###############################################
   # Plot points
   xm <- est$x1;
