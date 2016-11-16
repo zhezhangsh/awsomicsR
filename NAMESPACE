@@ -1,6 +1,7 @@
 
 export("AddAPCluster");
 export("AddHref");
+export("AwsomicsHome");
 export("BiclusterFromList");
 export("CalculateColoredBlockSize");
 export("CollectGwasDbData");
