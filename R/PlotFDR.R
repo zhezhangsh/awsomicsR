@@ -15,7 +15,7 @@ PlotFDR <- function(q, col='#3333FF', xlab='', ylab='', title='', plotly=FALSE) 
   if (plotly) {
     require(plotly);
     v <- seq(min(q), 1, 0.01);
-    plot_ly(x=v, y=n, type='scatter', mode='lines') %>%
+    plot_ly(x=v, y=n, type='scatter', mode='lines', line=list(color = "#885EFC", width=5)) %>%
       layout(
         showlegend=FALSE,
         xaxis = list(title=xlab, zeroline=FALSE, showgrid=FALSE, showline=TRUE, showticklabels=TRUE),
