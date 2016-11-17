@@ -31,7 +31,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   
   ############################################################################################
   p <- plot_ly(x = rnm, y = d[, 1], type = 'bar', name = cnm[1], text = rnm,
-               error_y = list(value = s[[i]], color = '#000000', thickness=1, width=wid, opacity=.9), 
+               error_y = list(value = s[[1]], color = '#000000', thickness=1, width=wid, opacity=.9), 
                marker = list(line=ln, color=cl[1])) %>%
     layout(
       barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title,
