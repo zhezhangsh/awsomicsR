@@ -35,7 +35,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   if (!identical(NA, xlab) & xlab!='') mgb <- mgb + 10;
   
   ############################################################################################
-  p <- plot_ly(x = rnm, y = 1:10, type = 'bar', name = cnm[1], text = rnm, error_y = y[[1]],
+  p <- plot_ly(x = rnm, y = d[, 1], type = 'bar', name = cnm[1], text = rnm, error_y = y[[1]],
                marker = list(line=ln, color=cl[1])); 
   p <- layout(p, barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title,
               xaxis = list(title = xlab, tickangle = -45), yaxis = list(title = ylab));
