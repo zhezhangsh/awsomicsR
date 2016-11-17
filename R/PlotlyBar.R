@@ -13,9 +13,9 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
     g <- unique(group);
     x <- lapply(g, function(g) d[group==g, , drop=FALSE]);
     d <- t(sapply(x, function(x) colMeans(x, na.rm=TRUE)));
-    s <- t(sapply(x, function(x) apply(x, 2, function(x) sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)])))));
-    rownames(d) <- rownames(s) <- g;
-  } else s <- matrix(0, nrow=nrow(d), ncol=ncol(d)); 
+    s <- lapply(x, function(x) apply(x, 2, function(x) sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)]))));
+    rownames(d) <- names(s) <- g;
+  } else s <- as.list(rep(0, ncol(d))); 
 
   # Parameters
   rnm <- rownames(d); 
@@ -31,7 +31,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   
   ############################################################################################
   p <- plot_ly(x = rnm, y = d[, 1], type = 'bar', name = cnm[1], text = rnm,
-               error_y = list(value = s[, 1], color = '#000000', thickness=1, width=wid, opacity=.9),
+               error_y = list(value = s[[i]], color = '#000000', thickness=1, width=wid, opacity=.9),
                marker = list(line=ln, color=cl[1])) %>%
     layout(
       barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title,
@@ -42,7 +42,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
     for (i in 2:ncol(d)) 
       p <- add_trace(p, y = d[, i], name = cnm[i], text = rnm, 
                      marker = list(line = ln, color = cl[i]), 
-                     error_y = list(value = s[, i]));
+                     error_y = list(value = s[[i]]));
   };
   
   p;
