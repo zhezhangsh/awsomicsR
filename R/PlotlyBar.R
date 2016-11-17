@@ -9,7 +9,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
     rownames(d) <- m;
   }
   
-  if (length(group) == nrow(d)) {
+  if (!identical(NA, group) & length(group) == nrow(d)) {
     g <- unique(group);
     x <- lapply(g, function(g) d[group==g, , drop=FALSE]);
     d <- t(sapply(x, function(x) colMeans(x, na.rm=TRUE)));
@@ -21,8 +21,8 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   rnm <- rownames(d); 
   cnm <- colnames(d);
   mgb <- 7.5*max(nchar(rnm));
-  bgp <- 0.1+round(1/nrow(d), 1); 
-  wid <- min(10, ceiling(100/length(d)));  # width of error bars
+  bgp <- min(0.5, 0.1+round(1/nrow(d), 1)); 
+  wid <- min(5, ceiling(100/length(d)));  # width of error bars
   
   col[grep('^#', col)] <- substr(col[grep('^#', col)], 1, 7); 
   if (length(d) > 32) ln <- list() else ln <- list(color = 'rgb(8,48,107,.5)', width = 1); 
