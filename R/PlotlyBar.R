@@ -15,15 +15,18 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
     d <- t(sapply(x, function(x) colMeans(x, na.rm=TRUE)));
     s <- sapply(x, function(x) apply(x, 2, function(x) sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)]))));
     w <- min(5, ceiling(100/length(d)));  # width of error bars
-    y <- apply(s, 1, function(s) list(value = s, color = '#000000', thickness = 1, width = w, opacity = .9)); 
     rownames(d) <- g;
+    y <- apply(s, 1, function(s) {
+      s[is.na(s)] <- 0;
+      list(array = s, type = 'data', color = '#000000', thickness = 1, width = w, opacity = .9); 
+    });
   } else y <- lapply(1:ncol(d), function(i) list());
   names(y) <- colnames(d);
   
   # Parameters
   rnm <- rownames(d); 
   cnm <- colnames(d);
-  mgb <- 7.5*max(nchar(rnm));
+  mgb <- 2.5 + 7.5*max(nchar(rnm));
   bgp <- min(0.5, 0.1+round(1/nrow(d), 1)); 
   
   col[grep('^#', col)] <- substr(col[grep('^#', col)], 1, 7); 
@@ -32,14 +35,11 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   if (!identical(NA, xlab) & xlab!='') mgb <- mgb + 10;
   
   ############################################################################################
-  p <- plot_ly(x = rnm, y = d[, 1], type = 'bar', name = cnm[1], text = rnm, error_y = y[[1]], 
-               marker = list(line=ln, color=cl[1])) %>%
-    layout(
-      barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title,
-      xaxis = list(title = xlab, tickangle = -45),
-      yaxis = list(title = ylab)
-    );
-  
+  p <- plot_ly(x = rnm, y = 1:10, type = 'bar', name = cnm[1], text = rnm, error_y = y[[1]],
+               marker = list(line=ln, color=cl[1])); 
+  p <- layout(p, barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title,
+              xaxis = list(title = xlab, tickangle = -45), yaxis = list(title = ylab));
+
   if (ncol(d) > 1) { 
     for (i in 2:ncol(d)) 
       p <- add_trace(p, y = d[, i], name = cnm[i], text = rnm, error_y = y[[i]],
