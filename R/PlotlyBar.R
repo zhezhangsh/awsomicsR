@@ -28,7 +28,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   
   col[grep('^#', col)] <- substr(col[grep('^#', col)], 1, 7); 
   if (length(d) > 32) ln <- list() else ln <- list(color = 'rgb(8,48,107,.5)', width = 1); 
-  if (identical(NA, col) | length(col)!=ncol(d)) cl <- rep('', ncol(d)) else cl <- col;
+  if (identical(NA, col) | length(col)>=ncol(d)) cl <- rep('', ncol(d)) else cl <- col[1:ncol(d)];
   if (!identical(NA, xlab) & xlab!='') mgb <- mgb + 10;
   
   ############################################################################################
