@@ -8,12 +8,13 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
     d <- matrix(d, nc=1); 
     rownames(d) <- m;
   }
+  if (is.null(rownames(d))) rownames(d) <- 1:nrow(d);
   
   if (!identical(NA, group) & length(group) == nrow(d)) {
     g <- unique(group);
     x <- lapply(g, function(g) d[group==g, , drop=FALSE]);
-    d <- t(sapply(x, function(x) colMeans(x, na.rm=TRUE)));
-    s <- sapply(x, function(x) apply(x, 2, function(x) sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)]))));
+    d <- do.call('rbind', lapply(x, function(x) colMeans(x, na.rm=TRUE)));
+    s <- do.call('cbind', lapply(x, function(x) apply(x, 2, function(x) sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)])))));
     w <- min(5, ceiling(100/length(d)));  # width of error bars
     rownames(d) <- g;
     y <- apply(s, 1, function(s) {
