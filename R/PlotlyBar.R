@@ -27,7 +27,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   # Parameters
   rnm <- rownames(d); 
   cnm <- colnames(d);
-  mgb <- 2.5 + 7.5*max(nchar(rnm));
+  mgb <- 5 + 7.5*max(nchar(rnm));
   bgp <- min(0.5, 0.1+round(1/nrow(d), 1)); 
   
   col[grep('^#', col)] <- substr(col[grep('^#', col)], 1, 7); 
