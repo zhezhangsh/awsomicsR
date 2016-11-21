@@ -1,20 +1,24 @@
 PlotlySmoothScatter <- function(
-  x, y, xlab, ylab, xlim, ylim, size=rep(5, length(x)), symbol=0, txt=names(x), npoints=1000, line=list(), 
+  x, y, xlab, ylab, xlim, ylim, size=rep(5, length(x)), symbol=0, txt=names(x), npoints=2000, ngrid=c(80,80), line=list(), 
   zero.line=c(TRUE, TRUE), log.axis=c(FALSE, FALSE), col.mark='#2222FFFF', col.shape='#2222FFFF', make.plot=TRUE) {
   
   require(plotly); 
   require(KernSmooth);
   require(gplots);
   
+  npoints <- max(1, npoints);
+
   rng.x <- range(x, na.rm = TRUE);
   rng.y <- range(y, na.rm = TRUE); 
   bandw <- c((rng.x[2]-rng.x[1])/100, (rng.y[2]-rng.y[1])/100);
   
-  est <- bkde2D(cbind(x, y), bandwidth = bandw, gridsize=c(80, 80));
+  est <- bkde2D(cbind(x, y), bandwidth = bandw, gridsize=ngrid);
   
   x1 <- rep(est$x1, length(est$x2));
   y1 <- rep(est$x2, each=length(est$x1));
   z1 <- sqrt(as.vector(est$fhat)); 
+  ix <- rep(1:ngrid[1], ngrid[2]);
+  iy <- rep(1:ngrid[2], each=ngrid[1]);
   
   # Colors
   c0 <- colorpanel(256, '#FFFFFFFF', col.shape);
@@ -24,14 +28,24 @@ PlotlySmoothScatter <- function(
   z2 <- floor((z1-mn)/(mx-mn)*256)+2;
   z2 <- pmax(1, pmin(256, z2)); 
   cs <- c0[z2]; 
-
+  
   # block width
   wx <- mean(est[[1]][-1]-est[[1]][-length(est[[1]])])/2;
   wy <- mean(est[[2]][-1]-est[[2]][-length(est[[2]])])/2;
 
-  df <- data.frame(X=x1, Y=y1, Color=cs, stringsAsFactors = FALSE); 
-  fl <- rev(sort(z2))[2000];
+  df <- data.frame(X=x1, Y=y1, Color=cs, IndX=ix, IndY=iy, Ind=1:length(x1), stringsAsFactors = FALSE); 
+  fl <- rev(sort(z2))[min(length(z2), 2000)];
   df <- df[z2>fl & x1>=min(x) & x1<=max(x) & y1>=min(y) & y1<=max(y), , drop = FALSE]; 
+  
+  ch <- rep(FALSE, nrow(df));
+  ch[df$IndX==1] <- TRUE;
+  ch[df$IndY==1] <- TRUE;
+  ch[df$IndX==ngrid[1]] <- TRUE;
+  ch[df$IndY==ngrid[2]] <- TRUE;
+  ch[(df$Ind+1) %in% df$Ind] <- TRUE;
+  ch[(df$Ind-1) %in% df$Ind] <- TRUE;
+  ch[(df$Ind+ngrid[1]) %in% df$Ind] <- TRUE;
+  ch[(df$Ind-ngrid[2]) %in% df$Ind] <- TRUE;
   
   # density blocks
   sp <- lapply(1:nrow(df), function(i) {
