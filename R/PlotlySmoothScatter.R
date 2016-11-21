@@ -64,8 +64,8 @@ PlotlySmoothScatter <- function(
   dens[] <- dens^0.25; 
   sel <- order(dens[cbind(ixm, iym)])[seq_len(npoints)]
 
-  col.mark <- paste('rgba(', paste(col2rgb(col.mark, TRUE)[, 1], collapse=','), ')', sep='');
-  mrk <- list(size = size[sel], symbol=symbol, color=col.mark, line=list(width=.8, color='rgba(0, 0, 0, .3)'));
+  col.mark <- paste('rgb(', paste(col2rgb(col.mark, FALSE)[, 1], collapse=','), ')', sep='');
+  mrk <- list(size = size[sel], symbol=symbol, color=col.mark, line=list(width=.5, color='rgba(0, 0, 0, .5)'));
   dd  <- data.frame(X=x, Y=y)[sel, ]; 
   
   # axes
@@ -74,9 +74,9 @@ PlotlySmoothScatter <- function(
   if (log.axis[1]) xa$type <- 'log';
   if (log.axis[2]) ya$type <- 'log';
   
-  p <- plot_ly(data=dd); 
+  p <- plot_ly(); 
   p <- layout(p, shapes=sp, showlegend=FALSE, xaxis=xa, yaxis=ya); 
-  p <- add_markers(p, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk)
+  p <- add_markers(p, data=dd, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk);
   # Add line
   if (length(line)==2) {
     if (length(line[[1]]==line[[2]])) {
