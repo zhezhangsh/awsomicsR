@@ -74,8 +74,9 @@ PlotlySmoothScatter <- function(
   if (log.axis[1]) xa$type <- 'log';
   if (log.axis[2]) ya$type <- 'log';
   
-  p <- plot_ly(data=dd, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk); 
+  p <- plot_ly(data=dd); 
   p <- layout(p, shapes=sp, showlegend=FALSE, xaxis=xa, yaxis=ya); 
+  p <- add_markers(p, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk)
   # Add line
   if (length(line)==2) {
     if (length(line[[1]]==line[[2]])) {
