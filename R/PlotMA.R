@@ -23,7 +23,7 @@ PlotMA <- function(x, y, xlab='', ylab='', title='', plotly=FALSE, npoints=1000)
     
     xl <- range(x, na.rm=TRUE);
     yl <- c(-max(abs(y), na.rm=TRUE), max(abs(y), na.rm=TRUE)); 
-    sz <- abs(y/z)*10*(5-max(1, min(4, round(log10(length(x))))));
+    sz <- abs(y/z)*5*(5-max(1, min(4, round(log10(length(x))))));
 
     PlotlySmoothScatter(x, y, xlab, ylab, xl, yl, size=sz, symbol = 0, npoints = npoints, line = list(x=lox, y=loy),
                         zero.line = c(FALSE, TRUE), col.mark = '#0000BBBB', col.shape = '#0000BB'); 

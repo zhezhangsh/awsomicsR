@@ -1,5 +1,7 @@
-PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, length(x)), symbol=0, txt=names(x), npoints=1000, line=list(), 
-                                zero.line=c(TRUE, TRUE), log.axis=c(FALSE, FALSE), col.mark='#2222FFCC', col.shape='#2222FFFF', make.plot=TRUE) {
+PlotlySmoothScatter <- function(
+  x, y, xlab, ylab, xlim, ylim, size=rep(5, length(x)), symbol=0, txt=names(x), npoints=1000, line=list(), 
+  zero.line=c(TRUE, TRUE), log.axis=c(FALSE, FALSE), col.mark='#2222FFFF', col.shape='#2222FFFF', make.plot=TRUE) {
+  
   require(plotly); 
   require(KernSmooth);
   require(gplots);
@@ -59,6 +61,7 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
   if (log.axis[2]) ya$type <- 'log';
   
   p <- plot_ly(data=dd, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk); 
+  p <- layout(p, shapes=sp, showlegend=FALSE, xaxis=xa, yaxis=ya); 
   # Add line
   if (length(line)==2) {
     if (length(line[[1]]==line[[2]])) {
@@ -68,6 +71,5 @@ PlotlySmoothScatter <- function(x, y, xlab, ylab, xlim, ylim, size=rep(10, lengt
       p <- add_lines(p, x=lx[ind], y=ly[ind], text='')
     }
   }
-  p <- layout(p, shapes=sp, showlegend=FALSE, xaxis=xa, yaxis=ya); 
   p; 
 }
