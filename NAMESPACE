@@ -31,6 +31,7 @@ export("PlainDocMining");
 export("PlotBarFromList");
 export("PlotBoxFromList");
 export("PlotColoredBlock");
+export("PlotlyContourScatter");
 export("PlotCumulativeFromList");
 export("PlotDensityFromList");
 export("PlotFDR");

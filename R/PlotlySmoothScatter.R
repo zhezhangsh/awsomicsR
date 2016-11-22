@@ -1,13 +1,13 @@
 PlotlySmoothScatter <- function(
   x, y, xlab, ylab, xlim, ylim, size=rep(5, length(x)), symbol=0, txt=names(x), npoints=2000, ngrid=c(80,80), line=list(), 
-  zero.line=c(TRUE, TRUE), log.axis=c(FALSE, FALSE), col.mark='#2222FFFF', col.shape='#2222FFFF', make.plot=TRUE) {
+  zero.line=c(TRUE, TRUE), log.axis=c(FALSE, FALSE), col.mark='#2222FFFF', col.shape='#2222FFFF') {
   
   require(plotly); 
   require(KernSmooth);
   require(gplots);
   
   npoints <- max(1, npoints);
-
+  
   rng.x <- range(x, na.rm = TRUE);
   rng.y <- range(y, na.rm = TRUE); 
   bandw <- c((rng.x[2]-rng.x[1])/100, (rng.y[2]-rng.y[1])/100);
@@ -32,7 +32,7 @@ PlotlySmoothScatter <- function(
   # block width
   wx <- mean(est[[1]][-1]-est[[1]][-length(est[[1]])])/2;
   wy <- mean(est[[2]][-1]-est[[2]][-length(est[[2]])])/2;
-
+  
   df <- data.frame(X=x1, Y=y1, Color=cs, IndX=ix, IndY=iy, Ind=1:length(x1), stringsAsFactors = FALSE); 
   fl <- rev(sort(z2))[min(length(z2), 2000)];
   df <- df[z2>fl & x1>=min(x) & x1<=max(x) & y1>=min(y) & y1<=max(y), , drop = FALSE]; 
@@ -63,7 +63,7 @@ PlotlySmoothScatter <- function(
   dens <- est$fhat
   dens[] <- dens^0.25; 
   sel <- order(dens[cbind(ixm, iym)])[seq_len(npoints)]
-
+  
   col.mark <- paste('rgb(', paste(col2rgb(col.mark, FALSE)[, 1], collapse=','), ')', sep='');
   mrk <- list(size = size[sel], symbol=symbol, color=col.mark, line=list(width=.5, color='rgba(0, 0, 0, .5)'));
   dd  <- data.frame(X=x, Y=y)[sel, ]; 
@@ -79,10 +79,10 @@ PlotlySmoothScatter <- function(
   p <- add_markers(p, data=dd, x = ~X, y = ~Y, type='scatter', mode='markers', text=txt[sel], hoverinfo="text", marker=mrk);
   # Add line
   if (length(line)==2) {
-    if (length(line[[1]]==line[[2]])) {
+    if (length(line[[1]])==length(line[[2]])) {
       lx <- line[[1]];
       ly <- line[[2]]; 
-      ind <- seq(1, length(lx), length.out = max(length(x), 1000));
+      ind <- seq(1, length(lx), length.out = min(length(x), 1000));
       p <- add_lines(p, x=lx[ind], y=ly[ind], text='')
     }
   }
