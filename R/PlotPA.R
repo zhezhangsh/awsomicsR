@@ -1,4 +1,4 @@
-PlotPA <- function(x, p, xlab='', ylab='', title='', plotly=FALSE, npoints=1000) {
+PlotPA <- function(x, p, xlab='', ylab='', title='', plotly=FALSE, npoints=round(length(fc)/20)) {
   require(awsomics);
   
   if (is.na(xlab) | xlab=='') xlab <- 'Log2(average expression)';
@@ -25,11 +25,16 @@ PlotPA <- function(x, p, xlab='', ylab='', title='', plotly=FALSE, npoints=1000)
     require(plotly); 
     
     xl <- range(x, na.rm=TRUE);
-    yl <- c(0, max(abs(y), na.rm=TRUE)); 
+    yl <- c(0, 0.2+max(abs(y), na.rm=TRUE)); 
+    xl[2] <- 0.2+xl[2];
     sz <- abs(y/z)*10*(5-max(1, min(4, round(log10(length(x))))));
+    sz <- c(sz, 0,0,0,0);
+    x <- c(x, xl, xl);
+    y <- c(y, yl[1], yl[2], yl[1], yl[2]); 
     
-    PlotlySmoothScatter(x, y, xlab, ylab, xl, yl, size=sz, symbol = 0, npoints = npoints, line = list(x=lox, y=loy),
-                        zero.line = c(FALSE, FALSE), col.mark = '#0000BBBB', col.shape = '#0000BB'); 
+    PlotlyContourScatter(x, y, xlab=xlab, ylab=ylab, xlim=xl, ylim=yl, reversescale = FALSE, line = list(x=lox, y=loy),
+                         colorscale=list(list(0, '#FFFFFF'), list(.1, '#4444FF'), list(1, '#8888FF')),txt=names(x), 
+                         npoints=npoints, col.mark = '#8888FF', size=sz, symbol=0, marker.line=FALSE);
   } else {
     if (title=='' | is.na(title)) par(mar=c(5,5,2,2)) else par(mar=c(5,5,3,2));
     plot(x, y, pch=18, col='#4444DD88', cex=.75, xlab=xlab, ylab=ylab, ylim=c(0, 1.05*z), main = title, cex.lab=2);

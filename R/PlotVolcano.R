@@ -1,4 +1,4 @@
-PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=round(length(fc)/10)) {
+PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=round(length(fc)/20)) {
   require(awsomics);
   
   i  <- which(!is.na(fc) & !is.na(p) & fc<Inf & fc>-Inf);
@@ -11,19 +11,20 @@ PlotVolcano <- function(fc, p, title='', plotly=FALSE, npoints=round(length(fc)/
   cx <- z/max(z);
   mx <- max(abs(fc), na.rm=TRUE);
   xlim <- c(-mx, mx);
-  ylim <- c(0, max(y)+0.5); 
+  ylim <- c(0, max(y)+0.1); 
   
   if (plotly) {
     require(plotly);
-    sz  <- 10*cx*max(1, 5-max(1, min(4, round(log10(length(fc))))));
+    sz <- 10*cx*max(1, 5-max(1, min(4, round(log10(length(fc))))));
     sz <- c(sz, 0,0,0,0);
-    
+
     x <- c(fc, xlim, xlim);
     y <- c(y, ylim[1], ylim[2], ylim[1], ylim[2]); 
     
     PlotlyContourScatter(x, y, xlab='Log2(fold change)', ylab='-Log10(p value)', xlim=xlim, ylim=ylim,
-                         zero.line=c(TRUE, FALSE), reversescale = FALSE, colorscale='Reds',
-                         marker=list(txt=names(fc), npoints=npoints, col.mark = '#FF2222', size=sz, symbol=2));
+                         reversescale = FALSE, lines=list(c(0, 0), c(0, ylim[2])),
+                         colorscale=list(list(0, '#FFFFFF'), list(.1, '#FF4444'), list(1, '#FF8888')),
+                         txt=names(fc), npoints=npoints, col.mark = '#FF8888', size=sz, symbol=2, marker.line=FALSE);
    } else {
     if (title=='' | is.na(title)) par(mar=c(5,5,2,2)) else par(mar=c(5,5,3,2));
     
