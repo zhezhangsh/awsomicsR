@@ -8,29 +8,28 @@ PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1]
   # normalize   Whether to normalize data across samples
   # color       Color code
   
-  type=tolower(type)[1];
-  tp<-tolower(PlotMatrixGroupTypes());
+  type <- tolower(type)[1];
+  tp <- tolower(PlotMatrixGroupTypes());
   
-  grp<-lapply(grp, function(g) g[g %in% colnames(d)]);
-  grp<-grp[sapply(grp, length)>0];
-  d<-d[, unlist(grp, use.names=FALSE), drop=FALSE];
-  d<-d[!is.na(rowMeans(d)), , drop=FALSE];
-  if (normalize) d<-t(scale(t(d)));
+  grp <- lapply(grp, function(g) g[g %in% colnames(d)]);
+  grp <- grp[sapply(grp, length)>0];
+  d <- d[, unlist(grp, use.names=FALSE), drop=FALSE];
+  d <- d[!is.na(rowMeans(d)), , drop=FALSE];
+  if (normalize) d <- t(scale(t(d)));
   
   out<-list();
   
   if (ncol(d)==0) {
     msg <- 'Data requires at least 1 column.'; 
     out$message<-msg;
-    if (!plotly) plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else 
-      plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
+    if (!plotly) out$plotted <- plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else 
+      plotted <- list(plotly_empty() %>% layout(title=msg, margin=list(t=100))); 
   } else if (nrow(d)==0) {
     msg <- 'Data requires at least 1 row.'; 
     out$message<-msg;
-    if (!plotly) plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else 
-      plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
+    if (!plotly) out$plotted <- plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else 
+      plotted <- list(plotly_empty() %>% layout(title=msg, margin=list(t=100))); 
   } else {
-    plotted<-list();
     if (type == tp[1]) plotted <- PlotMatrixGroupHeatmap(d, grp, color, normalize, plotly) else 
       if (type == tp[2]) plotted <- PlotMatrixGroupBar(d, grp, color, normalize, plotly) else 
         if (type == tp[3]) plotted <- PlotMatrixGroupBox(d, grp, color, normalize, plotly) else 
@@ -38,15 +37,12 @@ PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1]
             if (type == tp[5]) plotted <- PlotMatrixGroupCumulative(d, grp, color, normalize, plotly) else {
               msg <- paste('Unknown plot type: ', type, '.', sep=''); 
               out$message<-msg;
-              if (!plotly) plotted <- plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else
-                plotted <- plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
+              if (!plotly) out$plotted <- plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else
+                plotted <- list(plotly_empty() %>% layout(title=msg, margin=list(t=100))); 
             }
-    
-    out<-list(plot.type=type);
-    out<-append(out, plotted);  
   };
-
-  out;
+  
+  if (!plotly) out else plotted[[1]]; 
 }
 
 #############################################################################################
@@ -94,7 +90,6 @@ PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
       
       out <- plot_ly(data=dd, x=~x, y=~y, z=~key, type = "heatmap",  colors = colorRamp(c("yellow", "red"))) %>%
         layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp) 
-      out; 
     }
   }
   list(heatmap=out, col=col);
