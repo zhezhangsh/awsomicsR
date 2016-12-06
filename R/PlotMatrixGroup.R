@@ -2,7 +2,7 @@
 
 PlotMatrixGroupTypes<-function() c('Heatmap', 'Bar Plot', 'Box Plot', 'Density Plot', 'Cumulative Plot');
 
-PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1]) {
+PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1], plotly=FALSE) {
   # d           A data matrix
   # grp         Named list corresponding to sample groups and column names in <d>
   # normalize   Whether to normalize data across samples
@@ -19,18 +19,28 @@ PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1]
   
   out<-list();
   
-  if (ncol(d)==0 | nrow(d)==0) {
-    plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste('Not enough data to plot'));
-    out$message<-'Not enough data to plot';
+  if (ncol(d)==0) {
+    msg <- 'Data requires at least 1 column.'; 
+    out$message<-msg;
+    if (!plotly) plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else 
+      plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
+  } else if (nrow(d)==0) {
+    msg <- 'Data requires at least 1 row.'; 
+    out$message<-msg;
+    if (!plotly) plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else 
+      plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
   } else {
     plotted<-list();
-    if (type == tp[1]) plotted<-PlotMatrixGroupHeatmap(d, grp, color, normalize) else 
-      if (type == tp[2]) plotted<-PlotMatrixGroupBar(d, grp, color, normalize) else 
-        if (type == tp[3]) plotted<-PlotMatrixGroupBox(d, grp, color, normalize) else 
-          if (type == tp[4]) plotted<-PlotMatrixGroupDensity(d, grp, color, normalize) else 
-            if (type == tp[5]) plotted<-PlotMatrixGroupCumulative(d, grp, color, normalize) else 
-              #if (type == tp[6]) plotted<-PlotMatrixGroupLine(d, grp, color, normalize) else 
-                plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste('Unknown plot type:', type)); 
+    if (type == tp[1]) plotted <- PlotMatrixGroupHeatmap(d, grp, color, normalize, plotly) else 
+      if (type == tp[2]) plotted <- PlotMatrixGroupBar(d, grp, color, normalize, plotly) else 
+        if (type == tp[3]) plotted <- PlotMatrixGroupBox(d, grp, color, normalize, plotly) else 
+          if (type == tp[4]) plotted <- PlotMatrixGroupDensity(d, grp, color, normalize, plotly) else 
+            if (type == tp[5]) plotted <- PlotMatrixGroupCumulative(d, grp, color, normalize, plotly) else {
+              msg <- paste('Unknown plot type: ', type, '.', sep=''); 
+              out$message<-msg;
+              if (!plotly) plotted <- plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else
+                plotted <- plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
+            }
     
     out<-list(plot.type=type);
     out<-append(out, plotted);  
@@ -41,31 +51,51 @@ PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1]
 
 #############################################################################################
 # Heatmap
-PlotMatrixGroupHeatmap<-function(d, grp, color, normalize) {
+PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
   if (nrow(d) < 2) {
-    plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste("Not enough genes to plot heatmap"));
-    out<-"Not enought genes";
+    msg <- out <- "Not enough genes to plot heatmap.";
+    if (!plotly) plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else
+      plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
   } else {
-    # block color
-    c<-gplots::colorpanel(129, 'yellow', 'red');
-    
-    # set label size
-    w0<-1.2/max(strwidth(colnames(d), unit='in'));
-    cexCol<-min(1.5, w0);
-    w<-1.2/max(strwidth(rownames(d), unit='in'));
-    h<-(par()$fin[2]-2.5)/nrow(d)/max(strheight(rownames(d), unit='in'));
-    cexRow<-min(1.5, min(w, h));
+    col <- GetColors(length(grp), color);
+    col <- rep(col, sapply(grp, length));
 
-    col<-GetColors(length(grp), color);
-    col<-rep(col, sapply(grp, length));
-    
-    mar.sz<-max(0, nrow(d)/-8+1.25);
-    par(omi=c(mar.sz, 0, mar.sz, 0));
-    
-    if (normalize) xlab<-'Normalized data' else xlab<-'Un-normalized data';
-    
-    out<-gplots::heatmap.2(d, scale='none', cexCol=cexCol, cexRow=cexRow, col=c, ColSideColors=col, trace='none', srtCol=30, srtRow=30,
-                           key=TRUE, keysize=1, key.title='', key.xlab=xlab, key.ylab='', density.info='none', margins=c(6, 10));
+    if (!plotly) {
+      # block color
+      c <- gplots::colorpanel(129, 'yellow', 'red');
+      
+      # set label size
+      w0 <- 1.2/max(strwidth(colnames(d), unit='in'));
+      cexCol <- min(1.5, w0);
+      w <- 1.2/max(strwidth(rownames(d), unit='in'));
+      h <- (par()$fin[2]-2.5)/nrow(d)/max(strheight(rownames(d), unit='in'));
+      cexRow <- min(1.5, min(w, h));
+      
+      if (normalize) xlab<-'Normalized data' else xlab<-'Un-normalized data';
+      
+      mar.sz<-max(0, nrow(d)/-8+1.25);
+      par(omi=c(mar.sz, 0, mar.sz, 0));
+      out <- gplots::heatmap.2(
+        d, scale='none', cexCol=cexCol, cexRow=cexRow, col=c, ColSideColors=col, trace='none', srtCol=30, srtRow=30, 
+        key=TRUE, keysize=1, key.title='', key.xlab=xlab, key.ylab='', density.info='none', margins=c(6, 10));      
+    } else {
+      xa <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = -30);
+      ya <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = +30);
+      
+      ml <- 7.5*max(nchar(rownames(d)));
+      mb <- 7.5*max(nchar(colnames(d)));
+      cl <- substr(col, 1, 7); 
+      nr <- nrow(d); 
+      sp <- lapply(1:length(col), function(i) 
+        list(type='rect', fillcolor=cl[i], line=list(color='black', width=.4), opacity = 0.9,
+             x0 = i-1.5, x1 = i-.5, xref = "x", y0 = -nr/25-.5, y1 = -nr/100-.5, yref = "y"));
+      
+      dd <- data.frame(x=rep(colnames(d), each=nrow(d)), y=rep(rownames(d), ncol(d)), key=round(as.vector(d), 4));
+      
+      out <- plot_ly(data=dd, x=~x, y=~y, z=~key, type = "heatmap",  colors = colorRamp(c("yellow", "red"))) %>%
+        layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp) 
+      out; 
+    }
   }
   list(heatmap=out, col=col);
 }
