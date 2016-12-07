@@ -41,6 +41,7 @@ export("PlotHeatmap");
 export("PlotHeatmap.2");
 export("PlotLogScatter");
 export("PlotlyBar");
+export("PlotlyMatrixGroupHeatmap");
 export("PlotlySmoothScatter");
 export("PlotMA");
 export("PlotPA");

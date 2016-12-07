@@ -63,16 +63,58 @@ PlotMatrixGroupBar<-function(d, grp, color, normalize) {
 }
 
 #############################################################################################
+# Heatmap plotly
+PlotlyMatrixGroupHeatmap<-function(d, grp, color, key="key", clustering=TRUE) {
+  if (nrow(d)<2 | ncol(d)<2) {
+    plotly_empty() %>% layout(title="Not enough rows/columns to plot a heatmap.", margin=list(t=100)); 
+  } else {
+    grp <- lapply(grp, function(grp) grp[grp %in% colnames(d)]); 
+    col <- GetColors(length(grp), color);
+    col <- rep(col, sapply(grp, length));
+    names(col) <- unlist(grp, use.names=FALSE); 
+    d <- d[, names(col), drop=FALSE]; 
+
+    if (clustering) {
+      d <- d[, hclust(as.dist(1-cor(d)))$order, drop=FALSE];
+      d <- d[hclust(as.dist(1-cor(t(d))))$order, , drop=FALSE];
+      col <- col[colnames(d)]; 
+    }
+    
+    xa <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = -30, 
+               tickmode='array', tickvals=0:(ncol(d)-1), ticktext=colnames(d));
+    ya <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = +30,
+               tickmode='array', tickvals=0:(nrow(d)-1), ticktext=rownames(d));
+    
+    ml <- 7.5*max(nchar(rownames(d)));
+    mb <- 7.5*max(nchar(colnames(d)));
+    cl <- substr(col, 1, 7);  
+    nr <- nrow(d); 
+    cb <- list(title=key, titleside='right'); 
+    sp <- lapply(1:length(col), function(i) 
+      list(type='rect', fillcolor=cl[i], line=list(color='black', width=.4), opacity = 0.9,
+           x0 = i-1.5, x1 = i-.5, xref = "x", y0 = -nr/25-.5, y1 = -nr/100-.5, yref = "y"));
+    
+    p <- plot_ly(z=d, type = "heatmap",  colors = colorRamp(c("yellow", "red")), colorbar=cb) %>%
+      layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp); 
+    
+    p;
+}; 
+
+#############################################################################################
 # Heatmap
-PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
+PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE, clustering=TRUE) {
   if (nrow(d) < 2) {
     msg <- out <- "Not enough genes to plot heatmap.";
     if (!plotly) plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=msg) else
       plotly_empty() %>% layout(title=msg, margin=list(t=100)); 
   } else {
+    grp <- lapply(grp, function(grp) grp[grp %in% colnames(d)]); 
     col <- GetColors(length(grp), color);
     col <- rep(col, sapply(grp, length));
-
+    names(col) <- unlist(grp, use.names=FALSE); 
+    d <- d[, names(col), drop=FALSE]; 
+    if (normalize) xlab<-'Normalized data' else xlab<-'Un-normalized data';
+    
     if (!plotly) {
       # block color
       c <- gplots::colorpanel(129, 'yellow', 'red');
@@ -84,8 +126,6 @@ PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
       h <- (par()$fin[2]-2.5)/nrow(d)/max(strheight(rownames(d), unit='in'));
       cexRow <- min(1.5, min(w, h));
       
-      if (normalize) xlab<-'Normalized data' else xlab<-'Un-normalized data';
-      
       mar.sz<-max(0, nrow(d)/-8+1.25);
       par(omi=c(mar.sz, 0, mar.sz, 0));
       out <- gplots::heatmap.2(
@@ -93,20 +133,27 @@ PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
         key=TRUE, keysize=1, key.title='', key.xlab=xlab, key.ylab='', density.info='none', margins=c(6, 10));
       list(heatmap=out, col=col);
     } else {
-      xa <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = -30);
-      ya <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = +30);
+      if (clustering) {
+        d <- d[, hclust(as.dist(1-cor(d)))$order, drop=FALSE];
+        d <- d[hclust(as.dist(1-cor(t(d))))$order, , drop=FALSE];
+        col <- col[colnames(d)]; 
+      }
+      
+      xa <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = -30, 
+                 tickmode='array', tickvals=0:(ncol(d)-1), ticktext=colnames(d));
+      ya <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = +30,
+                 tickmode='array', tickvals=0:(nrow(d)-1), ticktext=rownames(d));
       
       ml <- 7.5*max(nchar(rownames(d)));
       mb <- 7.5*max(nchar(colnames(d)));
-      cl <- substr(col, 1, 7); 
+      cl <- substr(col, 1, 7);  
       nr <- nrow(d); 
+      cb <- list(title=c(xlab), titleside=c('right')); 
       sp <- lapply(1:length(col), function(i) 
         list(type='rect', fillcolor=cl[i], line=list(color='black', width=.4), opacity = 0.9,
              x0 = i-1.5, x1 = i-.5, xref = "x", y0 = -nr/25-.5, y1 = -nr/100-.5, yref = "y"));
       
-      dd <- data.frame(x=rep(colnames(d), each=nrow(d)), y=rep(rownames(d), ncol(d)), key=round(as.vector(d), 4));
-      
-      out <- plot_ly(data=dd, x=~x, y=~y, z=~key, type = "heatmap",  colors = colorRamp(c("yellow", "red"))) %>%
+      out <- plot_ly(z=d, type = "heatmap",  colors = colorRamp(c("yellow", "red")), colorbar=cb) %>%
         layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp); 
       
       list(heatmap=out, col=cl); 
