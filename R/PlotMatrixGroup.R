@@ -64,7 +64,7 @@ PlotMatrixGroupBar<-function(d, grp, color, normalize) {
 
 #############################################################################################
 # Heatmap plotly
-PlotlyMatrixGroupHeatmap<-function(d, grp, color, key="key", clustering=TRUE) {
+PlotlyMatrixGroupHeatmap <- function(d, grp, color, key="key", clustering=TRUE) {
   if (nrow(d)<2 | ncol(d)<2) {
     plotly_empty() %>% layout(title="Not enough rows/columns to plot a heatmap.", margin=list(t=100)); 
   } else {
@@ -98,6 +98,7 @@ PlotlyMatrixGroupHeatmap<-function(d, grp, color, key="key", clustering=TRUE) {
       layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp); 
     
     p;
+  }
 }; 
 
 #############################################################################################
