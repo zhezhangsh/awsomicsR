@@ -1,4 +1,5 @@
-PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
+PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
+                      o = c('original'=0, 'high2low, label'=-1, 'low2high, label'=1, 'high2low, value'=-2, 'low2high, value'=2)) {
   require(plotly);
   
   # Format input data
@@ -9,6 +10,12 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
     rownames(d) <- m;
   }
   if (is.null(rownames(d))) rownames(d) <- 1:nrow(d);
+  
+  o <- o[1]; 
+  if (o == 2) d <- d[order(d[, 1]), , drop=FALSE] else 
+    if (o == -2) d <- d[rev(order(d[, 1])), , drop=FALSE] else 
+      if (o == 1) d <- d[order(rownames(d)), , drop=FALSE] else
+        if (o == -1) d <- d[rev(order(rownames(d))), , drop=FALSE]
   
   if (!identical(NA, group) & length(group) == nrow(d)) {
     g <- unique(group);
