@@ -11,13 +11,13 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
   }
   if (is.null(rownames(d))) rownames(d) <- 1:nrow(d);
   
-  if (!identical(NA, group) & length(group) == nrow(d)) {
-    o <- o[1]; 
-    if (o == 2) ind <- order(d[, 1]) else if (o == -2) ind <- rev(order(d[, 1])) else
-      if (o == 1) ind <- order(group) else if (o == -1) ind <- rev(order(group)) else ind <- 1:nrow(d); 
-    d <- d[ind, , drop=FALSE];
-    group <- group[ind];
+  o <- o[1]; 
+  if (o == 2) ind <- order(d[, 1]) else if (o == -2) ind <- rev(order(d[, 1])) else
+    if (o == 1) ind <- order(group) else if (o == -1) ind <- rev(order(group)) else ind <- 1:nrow(d); 
+  d <- d[ind, , drop=FALSE];
+  if (!identical(NA, group) & length(group) == nrow(d)) group <- group[ind];
     
+  if (!identical(NA, group) & length(group) == nrow(d)) {
     g <- unique(group);
     x <- lapply(g, function(g) d[group==g, , drop=FALSE]);
     d <- do.call('rbind', lapply(x, function(x) colMeans(x, na.rm=TRUE)));
