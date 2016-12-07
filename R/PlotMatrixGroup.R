@@ -46,6 +46,23 @@ PlotMatrixGroup<-function(d, grp, type, normalize=TRUE, color=GetColorTypes()[1]
 }
 
 #############################################################################################
+# Barplot
+PlotMatrixGroupBar<-function(d, grp, color, normalize) {
+  if (normalize) ylab<-'Normalized average expression level' else ylab<-'Average expression level';
+  
+  c<-GetColors(length(grp), color);
+  
+  m<-colMeans(d);
+  s<-lapply(grp, function(g) m[g]);
+  
+  ########################################
+  bar<-PlotBarFromList(s, ylab=ylab , c);#
+  ########################################
+  
+  list(barplot=bar, color=c);  
+}
+
+#############################################################################################
 # Heatmap
 PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
   if (nrow(d) < 2) {
@@ -73,7 +90,8 @@ PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
       par(omi=c(mar.sz, 0, mar.sz, 0));
       out <- gplots::heatmap.2(
         d, scale='none', cexCol=cexCol, cexRow=cexRow, col=c, ColSideColors=col, trace='none', srtCol=30, srtRow=30, 
-        key=TRUE, keysize=1, key.title='', key.xlab=xlab, key.ylab='', density.info='none', margins=c(6, 10));      
+        key=TRUE, keysize=1, key.title='', key.xlab=xlab, key.ylab='', density.info='none', margins=c(6, 10));
+      list(heatmap=out, col=col);
     } else {
       xa <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = -30);
       ya <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = +30);
@@ -89,27 +107,11 @@ PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE) {
       dd <- data.frame(x=rep(colnames(d), each=nrow(d)), y=rep(rownames(d), ncol(d)), key=round(as.vector(d), 4));
       
       out <- plot_ly(data=dd, x=~x, y=~y, z=~key, type = "heatmap",  colors = colorRamp(c("yellow", "red"))) %>%
-        layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp) 
+        layout(xaxis=xa, yaxis=ya, margin=list(l=ml, b=mb, t=60), shapes=sp); 
+      
+      list(heatmap=out, col=cl); 
     }
   }
-  list(heatmap=out, col=col);
-}
-
-#############################################################################################
-# Barplot
-PlotMatrixGroupBar<-function(d, grp, color, normalize) {
-  if (normalize) ylab<-'Normalized average expression level' else ylab<-'Average expression level';
-  
-  c<-GetColors(length(grp), color);
-  
-  m<-colMeans(d);
-  s<-lapply(grp, function(g) m[g]);
-
-  ########################################
-  bar<-PlotBarFromList(s, ylab=ylab , c);#
-  ########################################
-  
-  list(barplot=bar, color=c);  
 }
 
 #############################################################################################

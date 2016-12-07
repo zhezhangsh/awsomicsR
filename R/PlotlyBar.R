@@ -27,7 +27,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   # Parameters
   rnm <- rownames(d); 
   cnm <- colnames(d);
-  mgb <- 5 + 7.5*max(nchar(rnm));
+  mgb <- 7.5 + 7.5*max(nchar(rnm));
   bgp <- min(0.5, 0.1+round(1/nrow(d), 1)); 
   
   col[grep('^#', col)] <- substr(col[grep('^#', col)], 1, 7); 
@@ -37,9 +37,9 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='') {
   
   ############################################################################################
   p <- plot_ly(x = rnm, y = d[, 1], type = 'bar', name = cnm[1], text = rnm, error_y = y[[1]],
-               marker = list(line=ln, color=cl[1])); 
-  p <- layout(p, barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title,
-              xaxis = list(title = xlab, tickangle = -45), yaxis = list(title = ylab));
+               marker = list(line=ln, color=cl[1]));  
+  p <- layout(p, barmode = 'group', bargap=bgp, margins = list(b = mgb), title = title, yaxis = list(title = ylab),
+              xaxis = list(title = xlab, tickangle = -45, tickmode = 'array', tickvals = rnm));
 
   if (ncol(d) > 1) { 
     for (i in 2:ncol(d)) 

@@ -1,7 +1,7 @@
 # A set of utility functions to make common plots
 ################################################################################################################################
 ################################################################################################################################
-PlotBarFromList<-function(d, ylab='', color='#88888888') {
+PlotBarFromList<-function(d, ylab='', color='#88888888', plotly=FALSE) {
   d<-lapply(d, function(d) d[!is.na(d)]);
   m<-sapply(d, mean);
   se<-sapply(d, function(d) sd(d)/sqrt(length(d)));
@@ -10,16 +10,24 @@ PlotBarFromList<-function(d, ylab='', color='#88888888') {
   lims<-c(min(0, min(lo, na.rm=TRUE)), max(0, max(up, na.rm=TRUE)));
   rng<-lims[2]-lims[1];
   
-  ch<-unlist(strsplit(names(d), '\n'), use.names=FALSE);
-  wd<-1.1*max(strwidth(ch, units='inch'));  
-  par(mai=c(wd, 1, 0.2, 0.2), omi=c(0.1, 0, 0, 0));
-  
-  bar<-gplots::barplot2(m, xaxt='n', ylab=ylab, cex.lab=1.25, plot.ci=TRUE, ci.u=up, ci.l=lo, space=1/3, ylim=c(lims[1]-0.1*rng, lims[2]+0.1*rng), col=color);
-  if (lims[2]>0 & lims[1]<0) abline(h=0, lty=1);
-  
-  text(bar[,1], par('usr')[3], label=names(d), cex=min(3.6/wd, 1.5), srt=30, adj=c(1,1), xpd=TRUE);
-  
-  list(xaxis.pos=bar[,1], mean=m, se=se);
+  if (!plotly) {
+    ch<-unlist(strsplit(names(d), '\n'), use.names=FALSE);
+    wd<-1.1*max(strwidth(ch, units='inch'));  
+    par(mai=c(wd, 1, 0.2, 0.2), omi=c(0.1, 0, 0, 0));
+    
+    bar <- gplots::barplot2(m, xaxt='n', ylab=ylab, cex.lab=1.25, plot.ci=TRUE, ci.u=up, ci.l=lo, space=1/3, ylim=c(lims[1]-0.1*rng, lims[2]+0.1*rng), col=color);
+    if (lims[2]>0 & lims[1]<0) abline(h=0, lty=1);
+    
+    text(bar[,1], par('usr')[3], label=names(d), cex=min(3.6/wd, 1.5), srt=30, adj=c(1,1), xpd=TRUE);
+    
+    list(xaxis.pos=bar[,1], mean=m, se=se);
+  } else {
+    xa <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=TRUE, tickangle = -30, range=c(-1, length(m)));
+    ya <- list(title=ylab, zeroline=FALSE, showgrid=TRUE, showline=TRUE);
+    ey <- list(); 
+    
+    plot_ly(x=names(m), y=m, error_y=ey, type='bar', color=color, text=names(m), showlegend=FALSE) %>% layout(xaxis=xa, yaxis=ya); 
+  }
 }
 
 ################################################################################################################################
