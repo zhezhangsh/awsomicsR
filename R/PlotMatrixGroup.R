@@ -63,6 +63,61 @@ PlotMatrixGroupBar<-function(d, grp, color, normalize) {
 }
 
 #############################################################################################
+# Boxplot
+PlotMatrixGroupBox<-function(d, grp, color, normalize) {
+  if (normalize) ylab<-'Normalized expression level' else ylab<-'Expression level';
+  
+  c<-GetColors(length(grp), color);
+  
+  m<-colMeans(d);
+  s<-lapply(grp, function(g) m[g]);
+  
+  ########################################
+  bar<-PlotBoxFromList(s, ylab=ylab , c);#
+  ########################################
+  
+  list(boxplot=bar, color=c);  
+}
+
+#############################################################################################
+# Density plot
+PlotMatrixGroupDensity<-function(d, grp, color, normalize) {
+  if (nrow(d) < 2) {
+    dens<-"Not enough data points to make density plot";
+    plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste('Not enough data to make density plot'));
+  } else {
+    s<-lapply(grp, function(g) rowMeans(d[, g, drop=FALSE]));
+    if (normalize) xlab<-'Normalized expression level' else xlab<-'Expression level';
+    c<-GetColors(length(grp), color);
+    c0<-paste(substr(c, 1, 7), '88', sep='');
+    ######################################################################
+    dens<-PlotDensityFromList(s, xlab=xlab, c0, fill=TRUE, legend=TRUE); #
+    ######################################################################
+  }
+
+  list(densityplot=dens, color=c);  
+}
+
+#############################################################################################
+# Density plot
+PlotMatrixGroupCumulative<-function(d, grp, color, normalize) {
+  if (nrow(d) < 2) {
+    dens<-"Not enough data points to make cumulative plot";
+    plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste('Not enough data to make density plot'));
+  } else {
+    s<-lapply(grp, function(g) rowMeans(d[, g, drop=FALSE]));
+    if (normalize) xlab<-'Normalized expression level' else xlab<-'Expression level';
+    c<-GetColors(length(grp), color);
+    #########################################################
+    cm<-PlotCumulativeFromList(s, xlab=xlab, c, legend=TRUE); #
+    #########################################################
+  }
+  
+  list(cumulative=cm, color=c);  
+};
+
+
+#############################################################################################
 # Heatmap plotly
 PlotlyMatrixGroupHeatmap <- function(d, grp, color, key="key", clustering=TRUE) {
   if (nrow(d)<2 | ncol(d)<2) {
@@ -73,7 +128,7 @@ PlotlyMatrixGroupHeatmap <- function(d, grp, color, key="key", clustering=TRUE) 
     col <- rep(col, sapply(grp, length));
     names(col) <- unlist(grp, use.names=FALSE); 
     d <- d[, names(col), drop=FALSE]; 
-
+    
     if (clustering) {
       d <- d[, hclust(as.dist(1-cor(d)))$order, drop=FALSE];
       d <- d[hclust(as.dist(1-cor(t(d))))$order, , drop=FALSE];
@@ -85,8 +140,8 @@ PlotlyMatrixGroupHeatmap <- function(d, grp, color, key="key", clustering=TRUE) 
     ya <- list(title='', zeroline=FALSE, showgrid=FALSE, showline=FALSE, tickangle = +30,
                tickmode='array', tickvals=0:(nrow(d)-1), ticktext=rownames(d));
     
-    ml <- 7.5*max(nchar(rownames(d)));
-    mb <- 7.5*max(nchar(colnames(d)));
+    ml <- 4+8*max(nchar(rownames(d)));
+    mb <- 4+8*max(nchar(colnames(d)));
     cl <- substr(col, 1, 7);  
     nr <- nrow(d); 
     cb <- list(title=key, titleside='right'); 
@@ -162,57 +217,4 @@ PlotMatrixGroupHeatmap<-function(d, grp, color, normalize, plotly=FALSE, cluster
   }
 }
 
-#############################################################################################
-# Boxplot
-PlotMatrixGroupBox<-function(d, grp, color, normalize) {
-  if (normalize) ylab<-'Normalized expression level' else ylab<-'Expression level';
-  
-  c<-GetColors(length(grp), color);
-  
-  m<-colMeans(d);
-  s<-lapply(grp, function(g) m[g]);
-  
-  ########################################
-  bar<-PlotBoxFromList(s, ylab=ylab , c);#
-  ########################################
-  
-  list(boxplot=bar, color=c);  
-}
 
-#############################################################################################
-# Density plot
-PlotMatrixGroupDensity<-function(d, grp, color, normalize) {
-  if (nrow(d) < 2) {
-    dens<-"Not enough data points to make density plot";
-    plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste('Not enough data to make density plot'));
-  } else {
-    s<-lapply(grp, function(g) rowMeans(d[, g, drop=FALSE]));
-    if (normalize) xlab<-'Normalized expression level' else xlab<-'Expression level';
-    c<-GetColors(length(grp), color);
-    c0<-paste(substr(c, 1, 7), '88', sep='');
-    ######################################################################
-    dens<-PlotDensityFromList(s, xlab=xlab, c0, fill=TRUE, legend=TRUE); #
-    ######################################################################
-  }
-
-  list(densityplot=dens, color=c);  
-}
-
-
-#############################################################################################
-# Density plot
-PlotMatrixGroupCumulative<-function(d, grp, color, normalize) {
-  if (nrow(d) < 2) {
-    dens<-"Not enough data points to make cumulative plot";
-    plot(0, xaxt='n', yaxt='n', type='n', xlab='', ylab='', main=paste('Not enough data to make density plot'));
-  } else {
-    s<-lapply(grp, function(g) rowMeans(d[, g, drop=FALSE]));
-    if (normalize) xlab<-'Normalized expression level' else xlab<-'Expression level';
-    c<-GetColors(length(grp), color);
-    #########################################################
-    cm<-PlotCumulativeFromList(s, xlab=xlab, c, legend=TRUE); #
-    #########################################################
-  }
-  
-  list(cumulative=cm, color=c);  
-}
