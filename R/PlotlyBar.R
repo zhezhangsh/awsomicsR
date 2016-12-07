@@ -10,13 +10,8 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
     rownames(d) <- m;
   }
   if (is.null(rownames(d))) rownames(d) <- 1:nrow(d);
+  group <- as.vector(group); 
   
-  o <- o[1]; 
-  if (o == 2) ind <- order(d[, 1]) else if (o == -2) ind <- rev(order(d[, 1])) else
-    if (o == 1) ind <- order(group) else if (o == -1) ind <- rev(order(group)) else ind <- 1:nrow(d); 
-  d <- d[ind, , drop=FALSE];
-  if (!identical(NA, group) & length(group) == nrow(d)) group <- group[ind];
-    
   if (!identical(NA, group) & length(group) == nrow(d)) {
     g <- unique(group);
     x <- lapply(g, function(g) d[group==g, , drop=FALSE]);
@@ -30,6 +25,11 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
     });
   } else y <- lapply(1:ncol(d), function(i) list());
   names(y) <- colnames(d);
+  
+  o <- o[1]; 
+  if (o == 2) ind <- order(d[, 1]) else if (o == -2) ind <- rev(order(d[, 1])) else
+    if (o == 1) ind <- order(rownames(d)) else if (o == -1) ind <- rev(order(rownames(d))) else ind <- 1:nrow(d); 
+  d <- d[ind, , drop=FALSE];
   
   # Parameters
   rnm <- rownames(d); 
