@@ -16,13 +16,13 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
       x <- d[, 1]; 
       y <- d[, 2]; 
       names(x) <- names(y) <- rownames(d); 
-      if (mn != 0) xlim <- ylim <- c(mn-0.05*(mx-mn), mx+0.05*(mx-mn)) else c(mn, 1.05*mx);
+      if (mn != 0) xlim <- ylim <- c(mn-0.05*(mx-mn), mx+0.05*(mx-mn)) else xlim <- ylim <- c(mn, 1.05*mx);
     }  else {
       labs <- c(paste('Mean(', paste(rev(colnames(d)), collapse=' & '), ')', sep=''), paste(rev(colnames(d)), collapse=' - ')); 
       x <- rowMeans(d, na.rm=TRUE);
       y <- d[, 2] - d[, 1]; 
       names(x) <- names(y) <- rownames(d); 
-      xlim <- c(0, 1.05*max(x, na.rm=TRUE));  
+      if (mn != 0) xlim <- c(mn-0.05*(mx-mn), mx+0.05*(mx-mn)) else xlim <- c(mn, 1.05*mx);
       ylim <- c(-1.05*max(y, na.rm=TRUE), 1.05*max(y, na.rm=TRUE)); 
     }
     text <- rownames(d); 
