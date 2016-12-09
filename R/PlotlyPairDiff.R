@@ -16,15 +16,14 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
       x <- d[, 1]; 
       y <- d[, 2]; 
       names(x) <- names(y) <- rownames(d); 
-      xlim <- ylim <- c(mn, mx);
+      if (mn != 0) xlim <- ylim <- c(mn-0.05*(mx-mn), mx+0.05*(mx-mn)) else c(mn, 1.05*mx);
     }  else {
       labs <- c(paste('Mean(', paste(rev(colnames(d)), collapse=' & '), ')', sep=''), paste(rev(colnames(d)), collapse=' - ')); 
       x <- rowMeans(d, na.rm=TRUE);
       y <- d[, 2] - d[, 1]; 
       names(x) <- names(y) <- rownames(d); 
-      xlim <- range(x, na.rm = TRUE); 
-      ylim <- range(y, na.rm = TRUE);
-      
+      xlim <- c(0, 1.05*max(x, na.rm=TRUE));  
+      ylim <- c(-1.05*max(y, na.rm=TRUE), 1.05*max(y, na.rm=TRUE)); 
     }
     text <- rownames(d); 
 
@@ -116,16 +115,15 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
     }
     if (length(high) > 0) {
       for (i in 1:length(high)) {
-        p <- add_trace(p, y=v[high[i]], type='scatter', 
-                       text=high[i], marker=list(size=12, symbol=18), name=high[i]);
-        p <- layout(p, showlegend=TRUE); 
+        p <- add_trace(p, y=v[high[i]], type='scatter', showlegend=TRUE,
+                       text=high[i], marker=list(size=10, symbol=18), name=high[i]);
       };
       p$x$attrs[[1]]$showlegend <- FALSE;
     }
     
     nc <- max(nchar(tck)); 
     sz <- min(15, ceiling(300/nc));
-    
+
     p <- layout(p, margin=list(b=min(250, nc*sz/2.5)), yaxis = list(title = y),
                 xaxis = list(tickangle = -30, tickmode = 'array', tickvals = tck, tickfont = list(size=sz))); 
     p; 
