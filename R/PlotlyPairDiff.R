@@ -107,7 +107,7 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
     names(v) <- rownames(d); 
     tck <- 'All genes'; 
     
-    p <- plot_ly(y=v, type='box', name='All genes'); 
+    p <- plot_ly(y=v, type='box', name='All genes', showlegend=FALSE); 
     if (length(sset) > 0) {
       for (i in 1:length(sset)) {
         p <- add_trace(p, y=v[sset[[i]]], name=names(sset)[i], showlegend=FALSE);
