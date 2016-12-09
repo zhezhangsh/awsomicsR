@@ -36,15 +36,18 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
     
     if (length(sset) > 0) {
       for (i in 1:length(sset)) {
-        p <- add_trace(p, x=d[sset[[i]], 1], y=d[sset[[i]], 2], type='scatter', 
-                         marker=list(size=8, symbol=22), name=names(sset)[i]);
+        x <- d[sset[[i]], 1]; 
+        y <- d[sset[[i]], 2]; 
+        names(x) <- names(y) <- sset[[i]]; 
+        p <- add_trace(p, x=d[sset[[i]], 1], y=d[sset[[i]], 2], type='scatter', mode='marker', 
+                       hoverinfo = 'text', text=sset[[i]], marker=list(size=8, symbol=22), name=names(sset)[i]);
         p <- layout(p, showlegend=TRUE, legend=list(x=xs, y=0, font=list(size=sz)))
       }
     }
     if (length(high) > 0) {
       for (i in 1:length(high)) {
-        p <- add_trace(p, x=d[high[i], 1], y=d[high[i], 2], type='scatter', 
-                       marker=list(size=10, symbol=18), name=high[i]);
+        p <- add_trace(p, x=d[high[i], 1], y=d[high[i], 2], type='scatter', hoverinfo = 'text', 
+                       text=high[i], marker=list(size=10, symbol=18), name=high[i]);
         p <- layout(p, showlegend=TRUE, legend=list(x=xs, y=0, font=list(size=sz)))
       }
     }
