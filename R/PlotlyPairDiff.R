@@ -106,16 +106,16 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
     names(v) <- rownames(d); 
     tck <- 'All genes'; 
     
-    p <- plot_ly(y=v, type='box', name='All genes', showlegend=FALSE); 
+    p <- plot_ly(y=v, type='box', name='All genes', showlegend=FALSE, hoverinfo='none'); 
     if (length(sset) > 0) {
       for (i in 1:length(sset)) {
-        p <- add_trace(p, y=v[sset[[i]]], name=names(sset)[i], showlegend=FALSE);
+        p <- add_trace(p, y=v[sset[[i]]], name=names(sset)[i], showlegend=FALSE, hoverinfo='none');
       }
       tck <- c(tck, names(sset)); 
     }
     if (length(high) > 0) {
       for (i in 1:length(high)) {
-        p <- add_trace(p, y=v[high[i]], type='scatter', showlegend=TRUE,
+        p <- add_trace(p, y=v[high[i]], type='scatter', showlegend=TRUE, hoverinfo='name',
                        text=high[i], marker=list(size=10, symbol=18), name=high[i]);
       };
       p$x$attrs[[1]]$showlegend <- FALSE;
