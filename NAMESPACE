@@ -1,4 +1,3 @@
-
 export("AddAPCluster");
 export("AddHref");
 export("AwsomicsHome");
@@ -43,6 +42,8 @@ export("PlotLogScatter");
 export("PlotlyBar");
 export("PlotlyMatrixGroupHeatmap");
 export("PlotlySmoothScatter");
+export("PlotlyPairDiffTypes");
+export("PlotlyPairDiff");
 export("PlotMA");
 export("PlotPA");
 export("PlotMatrixGroup");
