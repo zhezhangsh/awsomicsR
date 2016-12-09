@@ -15,7 +15,7 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
   
   if (type[1] == PlotlyPairDiffTypes()[1]) {
     p <- PlotlyContourScatter(
-      d[, 1], d[, 2], labs[1], labs[2], txt=text, col.mark='#C8C8C8', marker.line = FALSE, 
+      d[, 1], d[, 2], labs[1], labs[2], txt=text, col.mark='#A8A8A8', marker.line = FALSE, 
       xlim=c(mn, mx), ylim=c(mn, mx), colorscale = 'Greys', reversescale = TRUE);
 
     p <- add_lines(p, x=c(mn, mx), y=c(mn, mx), showlegend = FALSE, line=list(color='#888888'));
@@ -29,14 +29,14 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
       for (i in 1:length(sset)) {
         p <- add_trace(p, x=d[sset[[i]], 1], y=d[sset[[i]], 2], type='scatter', 
                          marker=list(size=8, symbol=22), name=names(sset)[i]);
-        p <- layout(p, showlegend=TRUE, legend=list(x=0.8, y=0, font=list(size=sz)))
+        p <- layout(p, showlegend=TRUE, legend=list(x=0.6, y=0, font=list(size=sz)))
       }
     }
     if (length(high) > 0) {
       for (i in 1:length(high)) {
         p <- add_trace(p, x=d[high[i], 1], y=d[high[i], 2], type='scatter', 
                        marker=list(size=10, symbol=18), name=high[i]);
-        p <- layout(p, showlegend=TRUE, legend=list(font=list(size=sz)))
+        p <- layout(p, showlegend=TRUE, legend=list(x=0.6, y=0, font=list(size=sz)))
       }
     }
     
