@@ -1,4 +1,4 @@
-PlotlyPairDiffTypes<-function() c("Scatter Plot", "MA Plot", "Box Plot", "Bar Plot", "Density Plot")
+PlotlyPairDiffTypes<-function() c("Scatter Plot", "MA Plot", "Bar Plot", "Box Plot", "Density Plot")
 
 PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
   require(plotly);
