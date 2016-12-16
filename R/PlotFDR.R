@@ -19,7 +19,7 @@ PlotFDR <- function(q, col='#3333FF', xlab='', ylab='', title='', plotly=FALSE) 
       layout(
         showlegend=FALSE,
         xaxis = list(title=xlab, zeroline=FALSE, showgrid=FALSE, showline=TRUE, showticklabels=TRUE),
-        yaxis = list(title=ylab, zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE, type='log'));
+        yaxis = list(title=ylab, range=c(0, log10(max(n))), zeroline=FALSE, showgrid=TRUE, showline=TRUE, showticklabels=TRUE, type='log'));
   } else {
     plot(1, type='n', log='y', xlab=xlab, ylab=ylab, cex.lab=2, xaxs='i', xlim=c(0, 1), ylim=c(1, length(q)), main=title);
     abline(v=seq(0, 1, .05), lty=2, col=8);
