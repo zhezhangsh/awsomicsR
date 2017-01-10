@@ -42,7 +42,7 @@ PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
   if (!identical(NA, col) & length(col)>=ncol(d)) cl <- col[1:ncol(d)] else cl <- rep('', ncol(d));
   if (!identical(NA, xlab) & xlab!='') mgb <- mgb + 10;
   
-  ############################################################################################
+  ##########################################################################################################################
   p <- plot_ly(x = 1:length(rnm), y = d[, 1], type = 'bar', name = cnm[1], text = rnm, error_y = y[[1]],
                marker = list(line=ln, color=cl[1]));  
   p <- layout(p, barmode = 'group', bargap=bgp, margin = list(b = mgb), title = title, yaxis = list(title = ylab),
