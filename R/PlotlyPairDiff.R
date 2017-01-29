@@ -40,7 +40,7 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
     } 
     
     p <- PlotlyContourScatter(x, y, labs[1], labs[2], txt=text, col.mark=cl, marker.line = FALSE, 
-                              xlim=xlim, ylim=ylim, colorscale = 'Greys', reversescale = TRUE);
+                              xlim=xlim, ylim=ylim, colorscale = 'Blues', reversescale = TRUE);
 
     if (type[1] == PlotlyPairDiffTypes()[1]) {
       p <- add_lines(p, x=xlim, y=ylim, showlegend = FALSE); 
