@@ -149,8 +149,10 @@ PlotlyPairDiff<-function(d, type, subset=list(), highlight=c()) {
     
     if (length(sset) > 0) {
       for (i in 1:length(sset)) {
-        den <- density(v[sset[[i]]]); 
-        p <- add_trace(p, x=den$x, y=den$y, name=names(sset)[i], showlegend=TRUE);
+        if (length(v[sset[[i]]]) > 1) {
+          den <- density(v[sset[[i]]]); 
+          p <- add_trace(p, x=den$x, y=den$y, name=names(sset)[i], showlegend=TRUE);
+        } else p <- add_trace(p, x=v[sset[[i]]], y=0, mode='markers', name=names(sset)[i], showlegend=TRUE);
       }
     };
     
