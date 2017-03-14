@@ -168,7 +168,7 @@ PlotVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#FF666666', '
   VennDiagram::draw.triple.venn(n1[1], n1[2], n1[3], n2[1], n2[2], n2[3], n3, category=names, fill=fill, ...);
 }
 
-PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#FF666666', '#66FF6666', '#6666FF66')) {
+PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
   require(plotly);
 
   if(!identical(s2, NA) & !identical(s3, NA)) sets<-list(s1, s2, s3) else sets<-s1;
