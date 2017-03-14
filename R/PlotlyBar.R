@@ -1,4 +1,4 @@
-sPlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
+PlotlyBar <- function(d, group=NA, col=NA, title='', xlab='', ylab='',
                       o = c('original'=0, 'high2low, label'=-1, 'low2high, label'=1, 'high2low, value'=-2, 'low2high, value'=2)) {
   require(plotly);
   
