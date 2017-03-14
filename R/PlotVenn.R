@@ -21,7 +21,7 @@ PlotlyVenn <- function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TR
     
     # Run fisher
     if (fisher) {
-      f  <- fisher.test(matrix(c(l1, l, l0, l2), nr=2));
+      f  <- fisher.test(matrix(c(l, l1, l2, l0), nr=2));
       p  <- f[[1]];
       ci <- f[[2]];
       or <- f[[3]];
@@ -46,7 +46,7 @@ PlotlyVenn <- function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TR
     shap3 <- list(type='rect', xref='x', yref='y', x0=0, x1=4, y0=0, y1=4, fillcolor='none',  opacity=1);
     
     plot_ly(x=x, y=y, type='scatter', mode='text', text=tt, textfont = tfont) %>% 
-      layout(shapes=list(shap1, shap2, shap3), title=title, showlegend=FALSE, xaxis=xaxis, yaxis=yaxis)
+      layout(shapes=list(shap1, shap2, shap3), title=title, showlegend=FALSE, margin=list(b=1,l=1,r=1,t=1), xaxis=xaxis, yaxis=yaxis)
   }
 };
 
