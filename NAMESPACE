@@ -36,6 +36,7 @@ export("PlotColoredBlock");
 export("PlotlyContourScatter");
 export("PlotlySynergy2");
 export("PlotlySynergy3");
+export("PlotlyVenn");
 export("PlotCumulativeFromList");
 export("PlotDensityFromList");
 export("PlotFDR");
