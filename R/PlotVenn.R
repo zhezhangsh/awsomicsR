@@ -179,9 +179,9 @@ PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
   n2 <- sapply(rev(i), function(i) length(Reduce('intersect', sets[-i])))-n3;
   n1 <- sapply(i, function(i) length(setdiff(sets[[i]], Reduce('union', sets[-i]))));
               
-  shap1 <- list(type='circle', xref='x', yref='y', x0=1, x1=3, y0=1.5, y1=3.5, fillcolor='red', opacity=0.2, line=list(color='black', width=1)); 
-  shap2 <- list(type='circle', xref='x', yref='y', x0=0.5, x1=2.5, y0=0.5, y1=2.5, fillcolor='blue', opacity=0.2, line=list(color='black', width=1)); 
-  shap3 <- list(type='circle', xref='x', yref='y', x0=1.5, x1=3.5, y0=0.5, y1=2.5, fillcolor='green', opacity=0.2, line=list(color='black', width=1)); 
+  shap1 <- list(type='circle', xref='x', yref='y', x0=1, x1=3, y0=1.5, y1=3.5, fillcolor='red', opacity=0.3, line=list(color='black', width=1)); 
+  shap2 <- list(type='circle', xref='x', yref='y', x0=0.5, x1=2.5, y0=0.5, y1=2.5, fillcolor='blue', opacity=0.3, line=list(color='black', width=1)); 
+  shap3 <- list(type='circle', xref='x', yref='y', x0=1.5, x1=3.5, y0=0.5, y1=2.5, fillcolor='green', opacity=0.3, line=list(color='black', width=1)); 
   shap4 <- list(type='rect', xref='x', yref='y', x0=0, x1=4, y0=0, y1=4, fillcolor='#',  opacity=1);
   
   tt <- c(n1, n2, n3, names);
@@ -190,7 +190,7 @@ PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
   
   xaxis <- list(title='', range=c(0, 4), zeroline=FALSE, showgrid=FALSE, showline=FALSE, autotick=FALSE, showticklabels=FALSE);
   yaxis <- list(title='', range=c(0, 4), zeroline=FALSE, showgrid=FALSE, showline=FALSE, autotick=FALSE, showticklabels=FALSE);
-  tfont <- list(family = "sans serif", size = 24, color = toRGB("grey50")); 
+  tfont <- list(family = "sans serif", size = 20, color = toRGB("grey50")); 
   
   plot_ly(x=xs, y=ys, type='scatter', mode='text', text=tt, textfont = tfont) %>% 
     layout(shapes=list(shap1, shap2, shap3, shap4), title=title, showlegend=FALSE, margin=list(b=1,l=1,r=1,t=1), xaxis=xaxis, yaxis=yaxis)
