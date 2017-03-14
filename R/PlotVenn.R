@@ -21,11 +21,10 @@ PlotlyVenn <- function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TR
     
     # Run fisher
     if (fisher) {
-      fisher <- fisher.test(matrix(out$counts, nr=2));
       f  <- fisher.test(matrix(c(l1, l, l0, l2), nr=2));
-      p  <- fisher[[1]];
-      ci <- fisher[[2]];
-      or <- fisher[[3]];
+      p  <- f[[1]];
+      ci <- f[[2]];
+      or <- f[[3]];
       
       if (p<0.0001) p <- format(p, scientific=TRUE, digit=2) else p <- round(p, 4);
       p  <- gsub(' ', '', p);
