@@ -176,8 +176,8 @@ PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
   
   i  <- 1:3;
   n3 <- length(intersect(sets[[1]], intersect(sets[[2]], sets[[3]])));
-  n2 <- sapply(rev(i), function(i) length(do.call('intersect', sets[-i])))-n3;
-  n1 <- sapply(i, function(i) length(setdiff(sets[[i]], do.call('union', sets[-i]))));
+  n2 <- sapply(rev(i), function(i) length(Reduce('intersect', sets[-i])))-n3;
+  n1 <- sapply(i, function(i) length(setdiff(sets[[i]], Reduce('union', sets[-i]))));
               
   shap1 <- list(type='circle', xref='x', yref='y', x0=1, x1=3, y0=1.5, y1=3.5, fillcolor='red', opacity=0.2, line=list(color='black', width=1)); 
   shap2 <- list(type='circle', xref='x', yref='y', x0=0.5, x1=2.5, y0=0.5, y1=2.5, fillcolor='blue', opacity=0.2, line=list(color='black', width=1)); 
