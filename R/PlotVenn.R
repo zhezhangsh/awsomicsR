@@ -167,3 +167,33 @@ PlotVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#FF666666', '
   if (plot.new) plot.new();
   VennDiagram::draw.triple.venn(n1[1], n1[2], n1[3], n2[1], n2[2], n2[3], n3, category=names, fill=fill, ...);
 }
+
+PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#FF666666', '#66FF6666', '#6666FF66')) {
+  require(plotly);
+
+  if(!identical(s2, NA) & !identical(s3, NA)) sets<-list(s1, s2, s3) else sets<-s1;
+  sets <- lapply(sets, unique);
+  
+  i  <- 1:3;
+  n3 <- length(intersect(sets[[1]], intersect(sets[[2]], sets[[3]])));
+  n2 <- sapply(rev(i), function(i) length(do.call('intersect', sets[-i])))-n3;
+  n1 <- sapply(i, function(i) length(setdiff(sets[[i]], do.call('union', sets[-i]))));
+              
+  shap1 <- list(type='circle', xref='x', yref='y', x0=1, x1=3, y0=1.5, y1=3.5, fillcolor='red', opacity=0.2, line=list(color='black', width=1)); 
+  shap2 <- list(type='circle', xref='x', yref='y', x0=0.5, x1=2.5, y0=0.5, y1=2.5, fillcolor='blue', opacity=0.2, line=list(color='black', width=1)); 
+  shap3 <- list(type='circle', xref='x', yref='y', x0=1.5, x1=3.5, y0=0.5, y1=2.5, fillcolor='green', opacity=0.2, line=list(color='black', width=1)); 
+  shap4 <- list(type='rect', xref='x', yref='y', x0=0, x1=4, y0=0, y1=4, fillcolor='#',  opacity=1);
+  
+  tt <- c(n1, n2, n3, names);
+  xs <- c(2, 1, 3, 1.375, 2.625, 2, 2, 2, 1, 3);
+  ys <- c(2.75, 1.25, 1.25, 2.125, 2.125, 1.125, 1.875, 3.75, 0.25, 0.25);
+  
+  xaxis <- list(title='', range=c(0, 4), zeroline=FALSE, showgrid=FALSE, showline=FALSE, autotick=FALSE, showticklabels=FALSE);
+  yaxis <- list(title='', range=c(0, 4), zeroline=FALSE, showgrid=FALSE, showline=FALSE, autotick=FALSE, showticklabels=FALSE);
+  tfont <- list(family = "sans serif", size = 24, color = toRGB("grey50")); 
+  
+  plot_ly(x=xs, y=ys, type='scatter', mode='text', text=tt, textfont = tfont) %>% 
+    layout(shapes=list(shap1, shap2, shap3, shap4), title=title, showlegend=FALSE, margin=list(b=1,l=1,r=1,t=1), xaxis=xaxis, yaxis=yaxis)
+  
+}
+  

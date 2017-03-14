@@ -37,6 +37,7 @@ export("PlotlyContourScatter");
 export("PlotlySynergy2");
 export("PlotlySynergy3");
 export("PlotlyVenn");
+export("PlotVenn3Way");
 export("PlotCumulativeFromList");
 export("PlotDensityFromList");
 export("PlotFDR");
