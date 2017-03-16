@@ -19,12 +19,14 @@ PlotlyDensity <- function(d, title='', xlab='', ylab=c('Density', 'Percent', 'Co
     y1 <- dens$y[dens$x<=cutoff];
     x2 <- dens$x[dens$x>=cutoff];
     y2 <- dens$y[dens$x>=cutoff]; 
+    x1[length(x1)] <- x1[length(x1)]/2+x2[1]/2;
+    x2[1] <- x1[length(x1)]/2+x2[1]/2;
     
     if (xzoom) {
-      sd <- sd(d); 
-      rg <- range(d); 
+      sd <- sd(d);
+      rg <- range(d);
       if (cutoff>=rg[1] & cutoff<=rg[2]) xaxis$range <- c(max(rg[1], cutoff-1.5*sd), min(rg[2], cutoff+1.5*sd));
-    }; 
+    };
     
     if (yl == 'count') tt <- paste('N =', c(length(d[d<cutoff]), length(d[d>cutoff]))) else
       tt <- paste(round(100*c(length(d[d<cutoff]), length(d[d>cutoff]))/length(d), 2), '%', sep='')
