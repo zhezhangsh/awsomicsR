@@ -38,7 +38,7 @@ PlotlyDensity <- function(d, title='', xlab='', ylab=c('Density', 'Percent', 'Co
       add_trace(x=x2, y=y2, mode='line', fill='tozeroy', fillcolor='#FF9988', line=list(color='#888888'), width=0.5) %>%
       add_trace(x=cutoff, y=0, mode='text', text=paste(tt[1], ' '), textposition='top left', textfont=tfont) %>%
       add_trace(x=cutoff, y=0, mode='text', text=paste(' ', tt[2]), textposition='top right', textfont=tfont) %>%
-      add_trace(x=c(cutoff, cutoff), y=c(0, 2*y2[1]), mode='line', line=list(width=5)) %>%
+      add_trace(x=c(cutoff, cutoff), y=c(0, 2*y2[1]), mode='line', line=list(width=3)) %>%
       layout(title = title, xaxis = xaxis, yaxis = yaxis, showlegend=FALSE);     
     
   }
