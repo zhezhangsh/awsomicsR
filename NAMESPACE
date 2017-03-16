@@ -34,6 +34,7 @@ export("PlotBarFromList");
 export("PlotBoxFromList");
 export("PlotColoredBlock");
 export("PlotlyContourScatter");
+export("PlotlyDensity");
 export("PlotlySynergy2");
 export("PlotlySynergy3");
 export("PlotlyVenn");
