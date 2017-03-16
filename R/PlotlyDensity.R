@@ -23,19 +23,19 @@ PlotlyDensity <- function(d, title='', xlab='', ylab=c('Density', 'Percent', 'Co
     if (xzoom) {
       sd <- sd(d); 
       rg <- range(d); 
-      if (cutoff>=rg[1] & cutoff<=rg[2]) xaxis$range <- c(max(rg[1], cutoff-3*sd), min(rg[2], cutoff+3*sd));
+      if (cutoff>=rg[1] & cutoff<=rg[2]) xaxis$range <- c(max(rg[1], cutoff-1.5*sd), min(rg[2], cutoff+1.5*sd));
     }; 
     
     if (yl == 'count') tt <- paste('N =', c(length(d[d<cutoff]), length(d[d>cutoff]))) else
       tt <- paste(round(100*c(length(d[d<cutoff]), length(d[d>cutoff]))/length(d), 2), '%', sep='')
     
-    tfont <- list(family = "sans serif", size = 20, color = '#666666');
+    tfont <- list(family = "sans serif", size = 16, color = '#666666');
     
     plot_ly(x=dens$x, y=dens$y, type='scatter', mode='line') %>%
       add_trace(x=x1, y=y1, mode='line', fill='tozeroy', fillcolor='#8899FF', line=list(color='#888888')) %>%
       add_trace(x=x2, y=y2, mode='line', fill='tozeroy', fillcolor='#FF9988', line=list(color='#888888'), width=0.5) %>%
-      add_trace(x=cutoff, y=0, mode='text', text=paste(tt[1], '  '), textposition='top left', textfont=tfont) %>%
-      add_trace(x=cutoff, y=0, mode='text', text=paste('  ', tt[2]), textposition='top right', textfont=tfont) %>%
+      add_trace(x=cutoff, y=0, mode='text', text=paste(tt[1], ' '), textposition='top left', textfont=tfont) %>%
+      add_trace(x=cutoff, y=0, mode='text', text=paste(' ', tt[2]), textposition='top right', textfont=tfont) %>%
       add_trace(x=c(cutoff, cutoff), y=yaxis$range, mode='line') %>%
       layout(title = title, xaxis = xaxis, yaxis = yaxis, showlegend=FALSE);     
     
