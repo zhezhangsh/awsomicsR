@@ -1,4 +1,4 @@
-PlotlyDensity <- function(d, cutoff=NA, title='', xlab='', ylab=c('Density', 'Percent', 'Count')) {
+PlotlyDensity <- function(d, title='', xlab='', ylab=c('Density', 'Percent', 'Count'), cutoff=NA, xzoom=!is.na(cutoff)) {d
   require(plotly); 
   
   d <- d[!is.na(d)]; 
@@ -14,20 +14,26 @@ PlotlyDensity <- function(d, cutoff=NA, title='', xlab='', ylab=c('Density', 'Pe
   if (is.na(cutoff)) {
     plot_ly(x=dens$x, y=dens$y, type='scatter', mode='line', fill="tozeroy") %>%
       layout(title = title, xaxis = xaxis, yaxis = yaxis);     
-  } else {
+  } else { # Split plot by cutoff
     x1 <- dens$x[dens$x<=cutoff]; 
     y1 <- dens$y[dens$x<=cutoff];
     x2 <- dens$x[dens$x>=cutoff];
     y2 <- dens$y[dens$x>=cutoff]; 
     
+    if (xzoom) {
+      sd <- sd(d); 
+      rg <- range(d); 
+      if (cutoff>=rg[1] & cutoff<=rg[2]) xaxis$range <- c(max(rg[1], cutoff-3*sd), min(rg[2], cutoff+3*sd));
+    }; 
+    
     if (yl == 'count') tt <- paste('N =', c(length(d[d<cutoff]), length(d[d>cutoff]))) else
       tt <- paste(round(100*c(length(d[d<cutoff]), length(d[d>cutoff]))/length(d), 2), '%', sep='')
     
-    tfont <- list(family = "sans serif", size = 24, color = '#B8B8B8');
+    tfont <- list(family = "sans serif", size = 20, color = '#666666');
     
     plot_ly(x=dens$x, y=dens$y, type='scatter', mode='line') %>%
-      add_trace(x=x1, y=y1, mode='line', fill='tozeroy', fillcolor='#9966FF', line=list(color='#888888')) %>%
-      add_trace(x=x2, y=y2, mode='line', fill='tozeroy', fillcolor='#FF6699', line=list(color='#888888'), width=0.5) %>%
+      add_trace(x=x1, y=y1, mode='line', fill='tozeroy', fillcolor='#8899FF', line=list(color='#888888')) %>%
+      add_trace(x=x2, y=y2, mode='line', fill='tozeroy', fillcolor='#FF9988', line=list(color='#888888'), width=0.5) %>%
       add_trace(x=cutoff, y=0, mode='text', text=paste(tt[1], '  '), textposition='top left', textfont=tfont) %>%
       add_trace(x=cutoff, y=0, mode='text', text=paste('  ', tt[2]), textposition='top right', textfont=tfont) %>%
       add_trace(x=c(cutoff, cutoff), y=yaxis$range, mode='line') %>%
