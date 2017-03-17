@@ -1,4 +1,4 @@
-PlotlyHeatmap(d) {
+PlotlyHeatmap <- function(d) {
   require(awsomics); 
   
   d <- d[hclust(as.dist(1-cor(t(d))))$order, , drop=FALSE];
