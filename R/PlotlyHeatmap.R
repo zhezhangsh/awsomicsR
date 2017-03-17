@@ -1,7 +1,7 @@
 PlotlyHeatmap <- function(d) {
   require(awsomics); 
   
-  d <- d[hclust(as.dist(1-cor(t(d))))$order, , drop=FALSE];
+  if (nrow(d) > 2) d <- d[hclust(as.dist(1-cor(t(d))))$order, , drop=FALSE];
   
   xa <- list(title = "", zeroline = FALSE, showgrid = FALSE, 
              showline = FALSE, tickangle = -30, tickmode = "array", 
