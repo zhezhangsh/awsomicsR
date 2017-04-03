@@ -1,4 +1,4 @@
-PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=5, title='', legend='', panel.size=600,
+PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=5, 
                          color.min=min(v), color.max=max(v), color.type=GetColorPanelTypes()[1]) {
   require(awsomics);
   
@@ -13,12 +13,12 @@ PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=
   if (color.type == 'heat') color <- rev(color);
   
   x <- c(0, -sqrt(0.75), sqrt(0.75), -sqrt(0.27), sqrt(0.27), 0, 0);
-  y <- c(1, -0.5, -0.5, 0.3, 0.3, -0.6, 0); 
+  y <- c(1, -0.5, -0.5, 0.3, 0.3, -0.6, 0) - 0.1; 
   w <- max(0.5, min(1.5, size));
   
   rng <- sort(c(color.min, color.max));
   rng <- FormatNumeric(matrix(rng, nc=1))[, 1];
-  col <- round(length(rgb)*(v-rng[1])/(rng[2]-rng[1]))
+  col <- round(length(color)*(v-rng[1])/(rng[2]-rng[1]))
   col <- color[col];
   
   plot(0, 0, type = "n", xlim = c(-1.25, 1.25), ylim = c(-1.25, 1.25), axes = FALSE, bty = "n", xaxs = "i", yaxs = "i", xlab = "", ylab = ""); 
