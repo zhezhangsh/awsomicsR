@@ -18,7 +18,7 @@ PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=
   
   rng <- sort(c(color.min, color.max));
   rng <- FormatNumeric(matrix(rng, nc=1))[, 1];
-  col <- round(length(color)*(v-rng[1])/(rng[2]-rng[1]))
+  col <- pmin(length(color), round(length(color)*(v-rng[1])/(rng[2]-rng[1]))+1); 
   col <- color[col];
   
   plot(0, 0, type = "n", xlim = c(-1.25, 1.25), ylim = c(-1.25, 1.25), axes = FALSE, bty = "n", xaxs = "i", yaxs = "i", xlab = "", ylab = ""); 
