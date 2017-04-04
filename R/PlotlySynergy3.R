@@ -1,4 +1,4 @@
-PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=5, 
+PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=5, title='', legend='',
                          color.min=min(v), color.max=max(v), color.type=GetColorPanelTypes()[1]) {
   require(awsomics);
   
@@ -39,7 +39,9 @@ PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=
     rect(xleft = xl[i], xright = xl[i+1], ybottom = -1.1, ytop = -1, lwd=0, col = color[i])) -> z;
   text(x=min(xl), y=-0.95, labels=rng[1]);
   text(x=max(xl), y=-0.95, labels=rng[2]);
-  
+  text(x=0, y=-0.95, labels=legend);
+    
+  title(main = title, cex.main = 1.5);
 };
 
 
