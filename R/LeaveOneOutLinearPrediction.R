@@ -52,7 +52,7 @@ LeaveOneOutLinearPrediction <- function(df, interact = FALSE, test_reduced = TRU
   
   l1o <- run.leave.one.out(df, interact);
   lmg <- glm(fm0, data=df);
-  err <- cv.glm(df[names(glm$residuals), ], glm(fm0, data=df));
+  err <- cv.glm(df[names(lmg$residuals), ], lmg);
   out$leave1out <- list(error=err$delta[1], N=err$K, prediction=l1o);
   
   prd <- cbind(observed=df[, 1], predicted=ftt, leave1out = l1o[, 1]); 
