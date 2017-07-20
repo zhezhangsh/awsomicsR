@@ -43,7 +43,7 @@ LeaveOneOutLinearPrediction <- function(df, interact = FALSE, test_reduced = TRU
       fst <- smm$fstatistic;
       stt <- c(predicted = as.numeric(prd), 'r.squared'=smm$r.squared, 'adj.r.squared'=smm$adj.r.squared, 
                'p.value'=pf(fst[1], fst[2], fst[3], lower.tail = FALSE), AIC = extractAIC(lm1)[2]);
-      names(stt) <- c('predicted', 'n', 'r_squared', 'r_squared_adjusted', 'p_value', 'aic');
+      names(stt) <- c('predicted', 'r_squared', 'r_squared_adjusted', 'p_value', 'aic');
       stt;
     }); 
     colnames(l1o) <- rownames(df); 
