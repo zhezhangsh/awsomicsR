@@ -5,6 +5,8 @@ LeaveOneOutLinearPrediction <- function(df, interact = FALSE, test_reduced = TRU
   # test_reduced  Whether to test the contribution of each independent variable with a reduced model
   
   require(stats); 
+  require(boot);
+  require(MASS); 
   
   for (i in 2:ncol(df)) if (is.character(df[[i]])) df[[i]] <- factor(df[[i]]); 
   
@@ -39,15 +41,18 @@ LeaveOneOutLinearPrediction <- function(df, interact = FALSE, test_reduced = TRU
       prd <- predict(lm1, df[i, ]); 
       smm <- summary(lm1); 
       fst <- smm$fstatistic;
-      c(predicted = as.numeric(prd), 'r.squared'=smm$r.squared, 'adj.r.squared'=smm$adj.r.squared, 
-        'p.value'=pf(fst[1], fst[2], fst[3], lower.tail = FALSE), AIC = extractAIC(fll)[2]);
+      stt <- c(predicted = as.numeric(prd), 'r.squared'=smm$r.squared, 'adj.r.squared'=smm$adj.r.squared, 
+               'p.value'=pf(fst[1], fst[2], fst[3], lower.tail = FALSE), AIC = extractAIC(lm1)[2]);
+      names(stt) <- c('predicted', 'r_squared', 'r_squared_adjusted', 'p_value', 'aic');
+      stt;
     }); 
     colnames(l1o) <- rownames(df); 
     t(l1o); 
   }
   
   l1o <- run.leave.one.out(df, interact);
-  out$leave1out <- l1o;
+  err <- cv.glm(df, glm(fm0, data=df));
+  out$leave1out <- list(error=err, prediction=l1o);
   
   prd <- cbind(observed=df[, 1], predicted=ftt, leave1out = l1o[, 1]); 
   
