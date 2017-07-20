@@ -44,7 +44,6 @@ PlotSynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=
   title(main = title, cex.main = 1.5);
 };
 
-
 PlotlySynergy3 <- function(v, name=c('', '', ''), shape=c('circle', 'rect'), size=5, title='', legend='', panel.size=600,
                            color.min=min(v), color.max=max(v), color.type=GetColorPanelTypes()[1]) {
   
