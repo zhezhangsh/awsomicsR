@@ -25,6 +25,7 @@ export("GetRowStatTypes");
 export("GroupSamples");
 export("HtmlGeneFactoid");
 export("HtmlKeyValue");
+export("LeaveOneOutLinearPrediction");
 export("LookupGeneSynonym");
 export("MatchPWM");
 export("OptimizeDBSCAN"); 
