@@ -20,10 +20,10 @@ LeaveOneOutLinearPrediction <- function(df, interact = FALSE, test_reduced = TRU
   fll <- lm(fm0, data=df);
   smm <- summary(fll); 
   fst <- smm$fstatistic;
-  stt <- c('r.squared'=smm$r.squared, 'adj.r.squared'=smm$adj.r.squared, 
-           'p.value'=pf(fst[1], fst[2], fst[3], lower.tail = FALSE), AIC = extractAIC(fll)[2]);
+  stt <- c(smm$r.squared, smm$adj.r.squared, pf(fst[1], fst[2], fst[3], lower.tail = FALSE), extractAIC(fll)[2]);
   ftt <- fitted(fll); 
   ftt <- ftt[rownames(df)];
+  names(stt) <- c('r_squared', 'r_squared_adjusted', 'p_value', 'aic');
   names(ftt) <- rownames(df); 
   
   out$full <- list();
