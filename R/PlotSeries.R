@@ -1,7 +1,10 @@
 # Plot several data series as lines
-PlotSeries<-function(d, se=NA, labs=c('', ''), title='', draw.legend=TRUE) {
+PlotSeries<-function(d, se=NA, labs=c('', ''), title='', draw.legend=TRUE, col=c(), lty=c()) {
   par(mar=c(min(12, max(nchar(colnames(d)))),5,2,2)); 
-  col<-rainbow(nrow(d));
+  
+  if (length(col)!=nrow(d)) col <- rainbow(nrow(d));
+  if (length(lty)!=nrow(d)) lty <- rep(1, nrow(d)); 
+  
   if (identical(dim(d), dim(se))) {
     mn<-min(d-se, na.rm=TRUE);
     mx<-max(d+se, na.rm=TRUE);
@@ -23,6 +26,6 @@ PlotSeries<-function(d, se=NA, labs=c('', ''), title='', draw.legend=TRUE) {
     segments(xx-0.05, hi, xx+0.05, hi)
   }
   
-  for (i in 1:nrow(d)) lines(d[i, ], col=col[i], lwd=2);
-  for (i in 1:nrow(d)) points(d[i, ], col=col[i], pch=19);
+  for (i in 1:nrow(d)) lines(d[i, ], col=col[i], lty=lty[i], lwd=2);
+  for (i in 1:nrow(d)) points(d[i, ], col=col[i], pch=18);
 }
