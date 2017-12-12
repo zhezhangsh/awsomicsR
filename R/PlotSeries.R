@@ -15,7 +15,7 @@ PlotSeries<-function(d, se=NA, labs=c('', ''), title='', draw.legend=TRUE, col=c
   plot(0, type='n', xlim=c(1, ncol(d)), ylim=c(mn, mx), main=title, cex.lab=2, xlab=labs[1], ylab=labs[2], xaxt='n')
   abline(h=0);
   axis(1, at=1:ncol(d), colnames(d), las=3, cex.axis=min(2, 10/max(nchar(colnames(d))))); 
-  if (draw.legend) legend(par()$usr[1], mx, lty=1, bty='n', col=col, text.col='darkgrey', legend=rownames(d));
+  if (draw.legend) legend(par()$usr[1], mx, lty=lty, bty='n', col=col, text.col='darkgrey', legend=rownames(d));
  
   if (identical(dim(d), dim(se))) {
     hi<-as.vector(d)+se;
