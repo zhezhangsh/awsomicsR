@@ -204,6 +204,9 @@ PlotVenn4Way <- function(sets, cols=c("orange", "red", "green", "blue")) {
   c <- sets[[3]];
   d <- sets[[4]];
 
+  nm <- names(sets);
+  if (is.null(nm)) nm <- paste('Set', 1:4, sep='_');
+
   draw.quad.venn(length(a), length(b), length(c), length(d),
                  length(intersect(a, b)), length(intersect(a, c)), length(intersect(a, d)),
                  length(intersect(b, c)), length(intersect(b, d)), length(intersect(c, d)),
