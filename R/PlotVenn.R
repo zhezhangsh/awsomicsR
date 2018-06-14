@@ -196,7 +196,7 @@ PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
     layout(shapes=list(shap1, shap2, shap3, shap4), title=title, showlegend=FALSE, margin=list(b=1,l=1,r=1,t=1), xaxis=xaxis, yaxis=yaxis)
 };
 
-PlotVenn4Way <- function(sets) {
+PlotVenn4Way <- function(sets, cols=c("orange", "red", "green", "blue")) {
   require('VennDiagram');
 
   a <- sets[[1]];
@@ -210,9 +210,7 @@ PlotVenn4Way <- function(sets) {
                  length(Reduce('intersect', sets[-1])), length(Reduce('intersect', sets[-2])),
                  length(Reduce('intersect', sets[-3])), length(Reduce('intersect', sets[-4])),
                  length(Reduce('intersect', sets)),
-                 fill = c("orange", "red", "green", "blue"),
-                 cat.col = c("orange", "red", "green", "blue"),
-                 category = names(sets)) -> venn;
+                 fill = cols, cat.col = cols, category = names(sets)) -> venn;
 
   venn;
 };
