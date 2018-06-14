@@ -41,6 +41,7 @@ export("PlotlyVenn");
 export("PlotlyVenn3Way");
 export("PlotSynergy3");
 export("PlotVenn3Way");
+export("PlotVenn4Way");
 export("PlotCumulativeFromList");
 export("PlotDensityFromList");
 export("PlotFDR");
