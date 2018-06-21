@@ -52,7 +52,7 @@ PlotlyVenn <- function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TR
 
 ##########################################################
 PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, pdf=FALSE,
-                   plot.new=FALSE, lwd=4, cex=1, title='', plotly=FALSE) {
+                   plot.new=FALSE, lwd=3, cex=1, title='', plotly=FALSE) {
   out<-list();
 
   if (length(universe)>=2) {
@@ -113,19 +113,19 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
     } else {
       if (title[1]=='') par(mar=rep(1, 4)) else par(mar=c(1, 1, 3, 1));
       plot(0, type='n', xlim=c(0, 8), ylim=c(0, 6), axes=F, bty='n', xaxs='i', yaxs='i', xlab='', ylab=''); # plot an empty space
-      bg<-'yellow1';
-      fg<-'lightblue';
-      symbols(3, 3, circles=1.75, bg=bg, fg=fg, lwd=lwd, add=TRUE, inches=FALSE);
-      symbols(5, 3, circles=1.75, bg=bg, fg=fg, lwd=lwd, add=TRUE, inches=FALSE);
-      symbols(3, 3, circles=1.75, fg=fg, lwd=lwd, add=TRUE, inches=FALSE);
+      bg<-'#7FB3D5';
+      fg<-'#F1C40F';
+      symbols(3, 3, circles=1.75, bg='#E74C3CBB', fg=fg, lwd=lwd/2, add=TRUE, inches=FALSE);
+      symbols(5, 3, circles=1.75, bg='#16A085BB', fg=fg, lwd=lwd/2, add=TRUE, inches=FALSE);
+      symbols(3, 3, circles=1.75, fg=fg, lwd=lwd/2, add=TRUE, inches=FALSE);
 
       rect(0, 0, 8, 6, lwd=lwd, border='black');
       title(main=title, cex.main=2);
 
-      col='maroon';
-      text(2, 3, labels=l1, col=col, cex=cex);
-      text(6, 3, labels=l2, col=col, cex=cex);
-      text(4, 3, labels=l0, col=col, cex=cex);
+      col='#154360';
+      text(2, 3, labels=l1, col=col, cex=cex, font=2);
+      text(6, 3, labels=l2, col=col, cex=cex, font=2);
+      text(4, 3, labels=l0, col=col, cex=cex, font=2);
 
       text(0.5, 3, labels=names[1], cex=cex, col='darkblue', srt=90);
       text(7.5, 3, labels=names[2], cex=cex, col='darkblue', srt=270);
@@ -156,7 +156,7 @@ PlotVenn<-function(s1, s2, names=c('Set1', 'Set2'),  universe=c(), fisher=TRUE, 
   out;
 }
 
-PlotVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#FF666666', '#66FF6666', '#6666FF66'), plot.new=TRUE, ...) {
+PlotVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#E74C3C', '#3498DB', '#2ECC71'), plot.new=TRUE, ...) {
 
   if(!identical(s2, NA) & !identical(s3, NA)) sets<-list(s1, s2, s3) else sets<-s1;
 
@@ -196,7 +196,7 @@ PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
     layout(shapes=list(shap1, shap2, shap3, shap4), title=title, showlegend=FALSE, margin=list(b=1,l=1,r=1,t=1), xaxis=xaxis, yaxis=yaxis)
 };
 
-PlotVenn4Way <- function(sets, cols=c("orange", "red", "green", "blue")) {
+PlotVenn4Way <- function(sets, cols=c('#E74C3C', '#3498DB', '#2ECC71', '#F1C40F')) {
   require('VennDiagram');
 
   a <- sets[[1]];
@@ -210,8 +210,8 @@ PlotVenn4Way <- function(sets, cols=c("orange", "red", "green", "blue")) {
   draw.quad.venn(length(a), length(b), length(c), length(d),
                  length(intersect(a, b)), length(intersect(a, c)), length(intersect(a, d)),
                  length(intersect(b, c)), length(intersect(b, d)), length(intersect(c, d)),
-                 length(Reduce('intersect', sets[-1])), length(Reduce('intersect', sets[-2])),
-                 length(Reduce('intersect', sets[-3])), length(Reduce('intersect', sets[-4])),
+                 length(Reduce('intersect', sets[-4])), length(Reduce('intersect', sets[-3])),
+                 length(Reduce('intersect', sets[-2])), length(Reduce('intersect', sets[-1])),
                  length(Reduce('intersect', sets)),
                  fill = cols, cat.col = cols, category = names(sets)) -> venn;
 
