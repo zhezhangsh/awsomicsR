@@ -166,7 +166,7 @@ PlotVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3), fill=c('#E74C3C', '#3
 
   if (plot.new) plot.new();
   VennDiagram::draw.triple.venn(n1[1], n1[2], n1[3], n2[1], n2[2], n2[3], n3, category=names, fill=fill,
-                                alpha=0.65, margin=0.15, ...);
+                                col='#F1C40F', alpha=0.65, margin=0.15, cat.dist=c(0.1, 0.1, 0.05), ...);
 }
 
 PlotlyVenn3Way<-function(s1, s2=NA, s3=NA, names=rep('', 3)) {
