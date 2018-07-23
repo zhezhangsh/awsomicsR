@@ -24,6 +24,7 @@ PlotBarFromList<-function(d, ylab='', color='#88888888', plotly=FALSE, individua
     bar <- gplots::barplot2(m, xaxt='n', ylab=ylab, cex.lab=1.25, plot.ci=TRUE, ci.u=up, ci.l=lo, space=1/3,
                             ylim=c(lims[1]-0.1*rng, lims[2]+0.1*rng), col=color);
     if (lims[2]>0 & lims[1]<0) abline(h=0, lty=1);
+
     if (individual) for (i in 1:length(d)) {
       x <- d[[i]];
       x <- x[!is.na(x)];
