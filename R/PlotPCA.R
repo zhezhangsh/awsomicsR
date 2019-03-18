@@ -199,7 +199,7 @@ PlotPCALegend<-function(device, settings, labels=as.vector(settings[,1])) {
   par(mai=c(1, 0, 0.25, 0));
   plot(0, type='n', xlim=c(0, 100), ylim=c(1, 100), axes=FALSE, bty='n', xaxs='i', yaxs='i', xlab='', ylab='');
   
-  adj <- min(100/length(labels), 4.0);
+  adj <- min(80/length(labels), 4.0);  
   w<-strwidth(labels, cex=1.2);
   w0<-1.2*80/max(w, 80);
   h0<-1.2*(100/length(labels))/adj;
