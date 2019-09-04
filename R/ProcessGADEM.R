@@ -12,7 +12,7 @@ RetrieveGadem<-function(gadem) {
     alignList<-motif@alignList; 
     hits<-data.frame(do.call(rbind, lapply(alignList, attributes)))[, 1:8];
     hits<-data.frame(lapply(hits, unlist));
-    list(pwm, consensus, hits); 
+    list(PWM=pwm, Consensus=consensus, Match=hits); 
   };
   
   motifs<-lapply(motifList, retrieveMotif); 
